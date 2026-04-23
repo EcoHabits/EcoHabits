@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt.android) apply false
+    id("androidx.room") version "2.8.4" apply false
 }
