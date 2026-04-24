@@ -1,8 +1,8 @@
 package com.ecohabits.domain.repository
 
-import com.ecohabits.domain.model.WeatherAdvice
+import com.ecohabits.domain.model.WeatherState
 
 interface WeatherRepository {
-    suspend fun getWeatherAdvice(): List<WeatherAdvice>
+    suspend fun getWeatherState(): WeatherState
 }
 
