@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     id("androidx.room")
+
+    // Supabase
+    kotlin("plugin.serialization") version "2.2.10"
 }
 
 android {
@@ -72,4 +75,9 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Supabase
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.6.0"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:3.6.0")
+    implementation("io.ktor:ktor-client-android:3.4.3")
 }
