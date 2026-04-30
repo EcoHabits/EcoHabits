@@ -5,8 +5,9 @@ import com.ecohabits.domain.repository.WeatherRepository
 import javax.inject.Inject
 
 class GetWeatherAdviceUseCase @Inject constructor(
-    private val repository: WeatherRepository
-) {
-    suspend operator fun invoke(): List<WeatherState> = repository.getWeatherAdvice()
-}
+    private val repository: WeatherRepository = TODO()
+)
+//{
+//    suspend operator fun invoke(): List<WeatherState> = repository.getWeatherAdvice()
+//}
 
