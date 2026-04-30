@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation("io.arrow-kt:arrow-core:1.2.4")
+    implementation(libs.arrow.core)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
@@ -80,4 +80,17 @@ dependencies {
     implementation(platform(libs.bom))
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+
+    // Serialization
+    implementation(libs.gson)
+
+    // Retrofit
+    implementation(libs.retrofit.v300)
+
+    // hilt testing
+    runtimeOnly(libs.hilt.android.testing)
+
+    // gson-converter for retrofit
+    implementation(libs.converter.gson.v300)
+
 }
