@@ -4,11 +4,18 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-// Colores extra
+// 🔹 Colores personalizados (tuyos)
+val GreenPrimary = Color(0xFF1B771B)
+val GreenSecondary = Color(0xFF4CAF50)
+val BackgroundLight = Color(0xFFF5F5F5)
+val BackgroundDark = Color(0xFF212121)
+val White = Color(0xFFFFFFFF)
+
+// 🔹 Colores extra del equipo
 val GreenSuccess = Color(0xFF4CAF50)
 val YellowWarning = Color(0xFFFFC107)
 
-// Light theme
+// 🔹 Light theme
 val LightColorScheme = lightColorScheme(
     primary = Color(0xFF4CAF50),
     onPrimary = Color(0xFFFFFFFF),
@@ -28,7 +35,7 @@ val LightColorScheme = lightColorScheme(
     outline = Color(0xFF79747E)
 )
 
-// Dark theme
+// 🔹 Dark theme
 val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF81C784),
     onPrimary = Color(0xFF003300),

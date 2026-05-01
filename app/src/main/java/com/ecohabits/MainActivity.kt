@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.ecohabits.navigation.AppNavHost
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.ecohabits.ui.theme.EcoHabitsTheme
+import com.ecohabits.ui.theme.LoginScreen
+import com.ecohabits.ui.theme.SignInScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,9 +18,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EcoHabitsTheme {
-                AppNavHost()
+                LoginScreen(onLogin = {}, onRegisterClick = {})
             }
         }
     }
 }
+
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    EcoHabitsTheme {
+        LoginScreen(onLogin = {}, onRegisterClick = {})
+    }
+}
+
+@Preview
+@Composable
+fun AppNavHostPreview() {
+    EcoHabitsTheme {
+        SignInScreen(onSignIn = {}, onBackClick = {})
+    }
+}
+
 

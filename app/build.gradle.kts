@@ -3,10 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
-    id("androidx.room")
-
-    // Supabase
-    kotlin("plugin.serialization") version "2.2.10"
 }
 
 android {
@@ -45,10 +41,6 @@ android {
     }
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,14 +53,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.arrow.core)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
+
 
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    add("ksp", libs.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,22 +65,5 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    // Supabase
-    implementation(platform(libs.bom))
-    implementation(libs.postgrest.kt)
-    implementation(libs.ktor.client.android)
-
-    // Serialization
-    implementation(libs.gson)
-
-    // Retrofit
-    implementation(libs.retrofit.v300)
-
-    // hilt testing
-    runtimeOnly(libs.hilt.android.testing)
-
-    // gson-converter for retrofit
-    implementation(libs.converter.gson.v300)
 
 }
