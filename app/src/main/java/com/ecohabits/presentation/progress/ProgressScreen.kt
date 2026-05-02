@@ -1,21 +1,23 @@
 package com.ecohabits.presentation.progress
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.AutoAwesome
@@ -24,7 +26,6 @@ import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Water
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,31 +37,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.ui.components.EcoCard
 import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
+import com.ecohabits.ui.theme.GreenSuccess
 
 @Composable
 fun ProgressScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .padding(top = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background  // ← Esto aplica el fondo
     ) {
-        ProgressTitle()
-        StatsCards(streak = "16", points = "2000", "3")
-        ImpactBox(savedWater = "45", co2Reduction = "12.5", avoidedWaste = "8.2")
-        BadgesGrid(
-            badges = TODO(),
-            columns = TODO(),
-            modifier = TODO(),
-        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .padding(top = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item { ProgressTitle() }
+            item {
+                StatsCards(
+                    streak = "16",
+                    points = "2000",
+                    "3"
+                )
+            }
+            item {
+                ImpactBox(
+                    savedWater = "45",
+                    co2Reduction = "12.5",
+                    avoidedWaste = "8.2"
+                )
+            }
+            item {
+                BadgesSection(
+                    badges = mock,
+                )
+            }
+        }
     }
 }
+
 
 @Composable
 fun ProgressTitle() {
@@ -194,7 +216,7 @@ fun BadgesCard(badges: String) {
                 imageVector = Icons.Default.AdminPanelSettings,
                 contentDescription = "Streak Icon",
                 modifier = Modifier.size(30.dp),
-                tint = if (isSystemInDarkTheme() == true) Color(0xFF8A68E5) else Color(0xFF5D34BF)
+                tint = if (isSystemInDarkTheme()) Color(0xFF8A68E5) else Color(0xFF5D34BF)
             )
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
@@ -255,7 +277,7 @@ fun WaterImpact(savedWater: String) {
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-            Column() {
+            Column {
                 Text(
                     text = "Agua ahorrada",
                     style = EcoHabitsTypography().titleMedium
@@ -296,7 +318,7 @@ fun Co2Impact(co2Reduction: String) {
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-            Column() {
+            Column {
                 Text(
                     text = "CO2 reducido",
                     style = EcoHabitsTypography().titleMedium
@@ -337,7 +359,7 @@ fun WasteImpact(avoidedWaste: String) {
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-            Column() {
+            Column {
                 Text(
                     text = "Residuos evitados",
                     style = EcoHabitsTypography().titleMedium
@@ -358,31 +380,135 @@ fun WasteImpact(avoidedWaste: String) {
     }
 }
 
-
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun BadgesGrid(
-    badges: List<BadgeUiState>,
-    columns: Int = 2,
-    modifier: Modifier = Modifier,
-    onBadgeClick: ((BadgeUiState) -> Unit)? = null
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(columns),
-        modifier = modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+fun BadgesSection(badges: List<BadgeUiState>) {
+    Text(
+        text = "Insignias Desbloqueadas",
+        style = EcoHabitsTypography().titleLarge,
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(vertical = 10.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center
+    )
+    // numero de columnas adaptable: mínimo 130.dp por columna
+    Column(
+        modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(badges) { badge ->
-            BadgeItem(badge = badge)
+        val rows = badges.chunked(2) // 2 por fila
+        rows.forEach { rowBadges ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                rowBadges.forEach { badge ->
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        BadgeItem(badge = badge)
+                    }
+                }
+            }
+            // Si la fila tiene solo 1 badge, agregar un espacio vacío
+            if (rowBadges.size == 1) {
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
     }
 }
 
 @Composable
-fun BadgeItem(badge: BadgeUiState) {
+fun BadgeItem(
+    badge: BadgeUiState,
+    onClick: (() -> Unit)? = null
+) {
+    val cardModifier = Modifier
+        .fillMaxWidth()
+        .let { if (onClick != null) it.clickable { onClick() } else it }
 
+    EcoCard(
+        modifier = cardModifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = if (badge.unlocked) 4.dp else 1.dp),
+        // si no está desbloqueado, podemos cambiar el color de fondo
+        containerColor = if (badge.unlocked) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Icono con fondo circular
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(
+                        color = if (badge.unlocked) badge.backgroundColor else badge.backgroundColor.copy(
+                            alpha = 0.3f
+                        ),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = badge.icon,
+                    contentDescription = badge.title,
+                    modifier = Modifier.size(40.dp),
+                    tint = if (badge.unlocked) Color.White else Color.White.copy(alpha = 0.5f)
+                )
+            }
+
+            // titulo de la insignia
+            Text(
+                text = badge.title,
+                style = EcoHabitsTypography().titleMedium,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = if (badge.unlocked) MaterialTheme.colorScheme.onSurface
+                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+
+            // indicador de bloqueo/desbloqueo
+            if (!badge.unlocked) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "Bloqueado",
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "Bloqueada",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            } else {
+                // Opcional: un check o estrella
+                Icon(
+                    imageVector = Icons.Default.AutoAwesome,
+                    contentDescription = "Desbloqueada",
+                    modifier = Modifier.size(16.dp),
+                    tint = GreenSuccess
+                )
+            }
+        }
+    }
 }
-
 
 // Previews
 @Preview(showSystemUi = true)
