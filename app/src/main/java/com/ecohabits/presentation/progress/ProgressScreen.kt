@@ -1,6 +1,7 @@
 package com.ecohabits.presentation.progress
 
 import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,12 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.AutoGraph
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Water
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,24 +44,31 @@ import com.ecohabits.ui.theme.EcoHabitsTypography
 
 @Composable
 fun ProgressScreen() {
-    Column() {
-
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .padding(top = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        ProgressTitle()
+        StatsCards(streak = "16", points = "2000", "3")
+        ImpactBox(savedWater = "45", co2Reduction = "12.5", avoidedWaste = "8.2")
+        BadgesGrid(
+            badges = TODO(),
+            columns = TODO(),
+            modifier = TODO(),
+        )
     }
-    ProgressTitle()
-    StatsCards(streak = "16", points = "2000", "3")
-    ImpactBox(savedWater = "45", co2Reduction = "12.5", avoidedWaste = "8.2")
 }
 
 @Composable
 fun ProgressTitle() {
     EcoCard(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .padding(top = 20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+            .fillMaxWidth(),
 
-    ) {
+        ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -86,9 +99,7 @@ fun ProgressTitle() {
 fun StatsCards(streak: String, points: String, badges: String) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 120.dp)
-            .height(180.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         StreakCard(streak)
@@ -100,7 +111,7 @@ fun StatsCards(streak: String, points: String, badges: String) {
 @Composable
 fun StreakCard(streak: String) {
     EcoCard(
-        modifier = Modifier.padding(horizontal = 10.dp),
+        modifier = Modifier.padding(horizontal = 5.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(
@@ -135,7 +146,7 @@ fun StreakCard(streak: String) {
 @Composable
 fun PointsCard(points: String) {
     EcoCard(
-        modifier = Modifier.padding(horizontal = 10.dp),
+        modifier = Modifier.padding(horizontal = 5.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(
@@ -170,7 +181,7 @@ fun PointsCard(points: String) {
 @Composable
 fun BadgesCard(badges: String) {
     EcoCard(
-        modifier = Modifier.padding(horizontal = 10.dp),
+        modifier = Modifier.padding(horizontal = 5.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(
@@ -183,7 +194,7 @@ fun BadgesCard(badges: String) {
                 imageVector = Icons.Default.AdminPanelSettings,
                 contentDescription = "Streak Icon",
                 modifier = Modifier.size(30.dp),
-                tint = Color(0xFF5A1EE5)
+                tint = if (isSystemInDarkTheme() == true) Color(0xFF8A68E5) else Color(0xFF5D34BF)
             )
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
@@ -204,15 +215,10 @@ fun BadgesCard(badges: String) {
 
 @Composable
 fun ImpactBox(savedWater: String, co2Reduction: String, avoidedWaste: String) {
-    Card(
+    EcoCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 320.dp)
-            .padding(horizontal = 15.dp)
             .wrapContentHeight(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFFFF)
-        ),
         elevation = CardDefaults.cardElevation(3.dp)
 
     ) {
@@ -232,13 +238,11 @@ fun ImpactBox(savedWater: String, co2Reduction: String, avoidedWaste: String) {
 
 @Composable
 fun WaterImpact(savedWater: String) {
-    Card(
+    EcoCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0x2036BDAD)
-        )
+        containerColor = Color(0x2036BDAD)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -254,9 +258,9 @@ fun WaterImpact(savedWater: String) {
             Column() {
                 Text(
                     text = "Agua ahorrada",
-                    style = MaterialTheme.typography.titleMedium
+                    style = EcoHabitsTypography().titleMedium
                 )
-                Row{
+                Row {
                     Text(
                         text = savedWater,
                         fontWeight = FontWeight.Bold,
@@ -275,13 +279,11 @@ fun WaterImpact(savedWater: String) {
 
 @Composable
 fun Co2Impact(co2Reduction: String) {
-    Card(
+    EcoCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0x3C7CB342)
-        )
+        containerColor = Color(0x3C7CB342)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -297,9 +299,9 @@ fun Co2Impact(co2Reduction: String) {
             Column() {
                 Text(
                     text = "CO2 reducido",
-                    style = MaterialTheme.typography.titleMedium
+                    style = EcoHabitsTypography().titleMedium
                 )
-                Row{
+                Row {
                     Text(
                         text = co2Reduction,
                         fontWeight = FontWeight.Bold,
@@ -317,14 +319,12 @@ fun Co2Impact(co2Reduction: String) {
 
 @Composable
 fun WasteImpact(avoidedWaste: String) {
-    Card(
+    EcoCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp)
             .padding(bottom = 10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0x43886B60)
-        )
+        containerColor = Color(0x43886B60)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -340,13 +340,13 @@ fun WasteImpact(avoidedWaste: String) {
             Column() {
                 Text(
                     text = "Residuos evitados",
-                    style = MaterialTheme.typography.titleMedium
+                    style = EcoHabitsTypography().titleMedium
                 )
-                Row{
+                Row {
                     Text(
                         text = avoidedWaste,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF886B60)
+                        color = if (isSystemInDarkTheme()) Color(0xFFCDA08F) else Color(0xFF725043)
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 3.dp))
                     Text(
@@ -359,6 +359,32 @@ fun WasteImpact(avoidedWaste: String) {
 }
 
 
+@Composable
+fun BadgesGrid(
+    badges: List<BadgeUiState>,
+    columns: Int = 2,
+    modifier: Modifier = Modifier,
+    onBadgeClick: ((BadgeUiState) -> Unit)? = null
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(columns),
+        modifier = modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(badges) { badge ->
+            BadgeItem(badge = badge)
+        }
+    }
+}
+
+@Composable
+fun BadgeItem(badge: BadgeUiState) {
+
+}
+
+
+// Previews
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewProgressScreen() {

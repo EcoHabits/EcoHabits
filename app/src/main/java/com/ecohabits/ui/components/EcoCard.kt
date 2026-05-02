@@ -1,5 +1,7 @@
 package com.ecohabits.ui.components
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,12 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.ui.theme.EcoHabitsTheme
+import androidx.compose.ui.graphics.Color
+import com.ecohabits.ui.theme.EcoCardLightBackground
+import com.ecohabits.ui.theme.EcoCardDarkBackground
+
 
 @Composable
 fun EcoCard(
     modifier: Modifier = Modifier, // Modificador
     onClick: (() -> Unit)? = null, // Acción al hacer clic, opcional
     elevation: androidx.compose.material3.CardElevation = CardDefaults.cardElevation(), // Elevación
+    containerColor: Color = if (isSystemInDarkTheme() == true) EcoCardDarkBackground else EcoCardLightBackground, // Color de fondo
     content: @Composable () -> Unit // Contenido del card
 ) {
     Card(
@@ -33,7 +40,7 @@ fun EcoCard(
         modifier = modifier,
         elevation = elevation,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
@@ -76,7 +83,7 @@ fun EcoCardPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EcoCardDarkPreview() {
     EcoHabitsTheme(darkTheme = true) {
