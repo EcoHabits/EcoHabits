@@ -1,7 +1,6 @@
 package com.ecohabits.presentation.auth.login
 
 import android.content.res.Configuration
-import com.ecohabits.ui.theme.LightColorScheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecohabits.R
 import com.ecohabits.ui.theme.EcoHabitsTheme
+import com.ecohabits.ui.theme.LightColorScheme
 
 @Composable
 fun LoginScreen(
@@ -35,7 +35,7 @@ fun LoginScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
-    var showPassword by remember {mutableStateOf(false)}
+    var showPassword by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -87,11 +87,8 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     shape = RoundedCornerShape(16.dp),
-                    elevation = CardDefaults.cardElevation(
-                        (8.dp)
-                    )
-                )
-                {
+                    elevation = CardDefaults.cardElevation(8.dp)
+                ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -102,7 +99,7 @@ fun LoginScreen(
                             text = "Iniciar Sesión",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary, // Corregido el color
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
 
@@ -152,7 +149,6 @@ fun LoginScreen(
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = LightColorScheme.primaryContainer),
                             enabled = uiState.isFormValid && !uiState.isLoading
-
                         ) {
                             if (uiState.isLoading) {
                                 CircularProgressIndicator(
@@ -172,7 +168,7 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        TextButton(onClick = onRegisterClick) { // Navegación externa
+                        TextButton(onClick = onRegisterClick) {
                             Text(
                                 text = "Regístrate aquí",
                                 color = MaterialTheme.colorScheme.primary,

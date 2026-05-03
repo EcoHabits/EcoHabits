@@ -25,19 +25,24 @@ fun MainScreen() {
 
         val navItems = NavItems.bottomNavItems
 
+        // se determina si la navbar se debe mostrar
+        val showBottomBar = state.currentRoute in navItems.map { it.route }
+
         val selectedIndex = navItems.indexOfFirst { it.route == state.currentRoute }.coerceAtLeast(0)
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             containerColor = MaterialTheme.colorScheme.background,
             bottomBar = {
-                BottomNavigationBar(
-                    selectedItem = selectedIndex,
-                    onItemSelected = { index ->
-                        viewModel.selectRoute(navItems[index].route)
-                    },
-                    items = navItems
-                )
+                if (showBottomBar) {
+                    BottomNavigationBar(
+                        selectedItem = selectedIndex,
+                        onItemSelected = { index ->
+                            viewModel.selectRoute(navItems[index].route)
+                        },
+                        items = navItems
+                    )
+                }
             }
         ) { innerPadding ->
             AppNavHost(
