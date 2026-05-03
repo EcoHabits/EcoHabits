@@ -9,6 +9,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.ecohabits.presentation.auth.login.LoginRoute
+import com.ecohabits.presentation.auth.signin.SignInScreen
 import com.ecohabits.presentation.challenges.ChallengesRoute
 import com.ecohabits.presentation.home.HomeRoute
 import com.ecohabits.presentation.progress.ProgressRoute
