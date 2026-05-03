@@ -7,7 +7,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,16 +18,20 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.AutoGraph
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Water
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,23 +43,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ecohabits.ui.components.BottomNavigationBar
 import com.ecohabits.ui.components.EcoCard
+import com.ecohabits.ui.components.NavigationItem
 import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
 import com.ecohabits.ui.theme.GreenSuccess
 
+val navMock = listOf(
+    NavigationItem(Icons.Default.Home, "Inico", "home"),
+    NavigationItem(Icons.AutoMirrored.Filled.List, "Retos", "challenges"),
+    NavigationItem(Icons.Default.AutoGraph, "Progreso", "progress")
+)
 @Composable
 fun ProgressScreen() {
-
-    Surface(
+    Scaffold(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background  // ← Esto aplica el fondo
-    ) {
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {BottomNavigationBar(
+            selectedItem = 2,
+            onItemSelected = {},
+            items = navMock
+        )
+        }
+    ) { innerPadding ->
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .padding(top = 20.dp),
+                .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { ProgressTitle() }
@@ -81,6 +97,7 @@ fun ProgressScreen() {
             }
         }
     }
+
 }
 
 
@@ -179,7 +196,7 @@ fun PointsCard(points: String) {
             Spacer(modifier = Modifier.padding(10.dp))
             Icon(
                 imageVector = Icons.Default.AutoGraph,
-                contentDescription = "Streak Icon",
+                contentDescription = "Points Icon",
                 modifier = Modifier.size(30.dp),
                 tint = Color(0xFF1E88E5)
             )
@@ -214,7 +231,7 @@ fun BadgesCard(badges: String) {
             Spacer(modifier = Modifier.padding(10.dp))
             Icon(
                 imageVector = Icons.Default.AdminPanelSettings,
-                contentDescription = "Streak Icon",
+                contentDescription = "Badges Icon",
                 modifier = Modifier.size(30.dp),
                 tint = if (isSystemInDarkTheme()) Color(0xFF8A68E5) else Color(0xFF5D34BF)
             )
@@ -380,7 +397,6 @@ fun WasteImpact(avoidedWaste: String) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BadgesSection(badges: List<BadgeUiState>) {
     Text(
