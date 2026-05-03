@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 // Colores extra
 val GreenSuccess = Color(0xFF4CAF50)
 val YellowWarning = Color(0xFFFFC107)
+val EcoCardLightBackground = Color(0xFFE8F5E8)
+val EcoCardDarkBackground = Color(0xE93C4B3C)
 
 // Light theme
 val LightColorScheme = lightColorScheme(
@@ -38,7 +40,7 @@ val DarkColorScheme = darkColorScheme(
     onSecondary = Color(0xFF2A1810),
     secondaryContainer = Color(0xFF40362B),
     tertiary = Color(0xFF8D6E63),
-    background = Color(0xFF0F1419),
+    background = Color(0xFF13181D),
     onBackground = Color(0xFFE2E3DC),
     surface = Color(0xFF0F1419),
     onSurface = Color(0xFFE2E3DC),
