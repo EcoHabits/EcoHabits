@@ -10,6 +10,11 @@ val YellowWarning = Color(0xFFFFC107)
 val EcoCardLightBackground = Color(0xFFE8F5E8)
 val EcoCardDarkBackground = Color(0xE93C4B3C)
 
+val ProgressBar = Color(0xFF2E7D32)
+
+val BackgroundBar = Color(0xFFC836C9)
+
+
 // Light theme
 val LightColorScheme = lightColorScheme(
     primary = Color(0xFF4CAF50),
@@ -27,7 +32,7 @@ val LightColorScheme = lightColorScheme(
     surfaceVariant = Color(0xFFE7E0EC),
     error = Color(0xFFBA1A1A),
     onError = Color(0xFFFFFFFF),
-    outline = Color(0xFF79747E)
+    outline = Color(0xFF79747E),
 )
 
 // Dark theme
