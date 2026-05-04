@@ -27,20 +27,9 @@ import com.ecohabits.ui.components.EcoCard
 import com.ecohabits.ui.components.EcoTextField
 import com.ecohabits.ui.theme.EcoHabitsTypography
 
-@Composable
-fun SignInScreen(
-    onSignIn: () -> Unit,
-    onBackClick: () -> Unit
-) {
-    SignInRoute(
-        onNavigateToHome = onSignIn,
-        onNavigateBack = onBackClick
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInContent(
+fun SignInScreen(
     uiState: SignInUiState,
     onNameChange: (String) -> Unit,
     onAgeChange: (String) -> Unit,
@@ -190,6 +179,7 @@ fun SignInContent(
                             EcoButton(
                                 text = if (uiState.isLoading) "Cargando..." else "Registrarse",
                                 onClick = onSignInClick,
+                                enabled = uiState.isFormValid && !uiState.isLoading,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(50.dp)

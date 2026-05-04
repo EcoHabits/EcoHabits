@@ -50,54 +50,37 @@ import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
 import com.ecohabits.ui.theme.GreenSuccess
 
-val navMock = listOf(
-    NavigationItem(Icons.Default.Home, "Inico", "home"),
-    NavigationItem(Icons.AutoMirrored.Filled.List, "Retos", "challenges"),
-    NavigationItem(Icons.Default.AutoGraph, "Progreso", "progress")
-)
+
 @Composable
 fun ProgressScreen() {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {BottomNavigationBar(
-            selectedItem = 2,
-            onItemSelected = {},
-            items = navMock
-        )
-        }
-    ) { innerPadding ->
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item { ProgressTitle() }
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item { ProgressTitle() }
-            item {
-                StatsCards(
-                    streak = "16",
-                    points = "2000",
-                    "3"
-                )
-            }
-            item {
-                ImpactBox(
-                    savedWater = "45",
-                    co2Reduction = "12.5",
-                    avoidedWaste = "8.2"
-                )
-            }
-            item {
-                BadgesSection(
-                    badges = mock,
-                )
-            }
+        item {
+            StatsCards(
+                streak = "16",
+                points = "2000",
+                badges = "3"
+            )
+        }
+
+        item {
+            ImpactBox(
+                savedWater = "45",
+                co2Reduction = "12.5",
+                avoidedWaste = "8.2"
+            )
+        }
+
+        item {
+            BadgesSection(badges = mock)
         }
     }
-
 }
 
 

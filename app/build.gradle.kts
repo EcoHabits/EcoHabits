@@ -91,6 +91,10 @@ dependencies {
     // hilt testing
     runtimeOnly(libs.hilt.android.testing)
 
+    // necesario para hilt
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
     // gson-converter for retrofit
     implementation(libs.converter.gson.v300)
 
