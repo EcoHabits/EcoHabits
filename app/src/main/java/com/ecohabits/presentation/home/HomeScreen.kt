@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AutoGraph
 import androidx.compose.material.icons.filled.Eco
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.CardDefaults
@@ -33,17 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.presentation.progress.BadgeItem
 import com.ecohabits.presentation.progress.BadgeUiState
-import com.ecohabits.ui.components.BottomNavigationBar
 import com.ecohabits.ui.components.EcoCard
-import com.ecohabits.ui.components.NavigationItem
 import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
-
-val navMock = listOf(
-    NavigationItem(Icons.Default.Home, "Inicio", "home"),
-    NavigationItem(Icons.AutoMirrored.Filled.List, "Retos", "challenges"),
-    NavigationItem(Icons.Default.AutoGraph, "Progreso", "progress")
-)
 
 @Composable
 fun HomeScreen(
@@ -54,14 +44,7 @@ fun HomeScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            BottomNavigationBar(
-                selectedItem = 0,
-                onItemSelected = {},
-                items = navMock
-            )
-        }
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
 
         LazyColumn(

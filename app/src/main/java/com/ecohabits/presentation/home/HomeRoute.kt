@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun HomeRoute() {
-    HomeScreen()
+    HomeScreen("150", 5, 12, emptyList())
 }
 
