@@ -13,6 +13,7 @@ import com.ecohabits.presentation.auth.login.LoginRoute
 import com.ecohabits.presentation.auth.signin.SignInRoute
 import com.ecohabits.presentation.auth.welcome.WelcomeScreen
 import com.ecohabits.presentation.challenges.ChallengesRoute
+import com.ecohabits.presentation.education.EducationRoute
 import com.ecohabits.presentation.home.HomeRoute
 import com.ecohabits.presentation.progress.ProgressRoute
 
@@ -65,5 +66,6 @@ fun AppNavHost(
         composable("home") { HomeRoute() }
         composable("challenges") { ChallengesRoute() }
         composable("progress") { ProgressRoute() }
+        composable("education") { EducationRoute() }
     }
 }

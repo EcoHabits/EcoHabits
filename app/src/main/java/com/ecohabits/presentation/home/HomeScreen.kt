@@ -36,13 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.ui.components.EcoButton
 import com.ecohabits.ui.components.EcoCard
+import com.ecohabits.ui.components.EducationTipCard
 import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
 import com.ecohabits.ui.theme.GreenSuccess
 
 @Composable
 fun HomeScreen(
-    uiState: HomeUiState = HomeUiState()
+    uiState: HomeUiState = HomeUiState(), onEducationClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -59,6 +60,7 @@ fun HomeScreen(
             item { GreetingSection(uiState.userName, uiState.streakDays) }
             item { WeatherCard(uiState.weather) }
             item { RecommendationsSection(uiState.recommendations) }
+            item { EducationTipCard(tip = uiState.educationTip, onReadMoreClick = onEducationClick)}
             item { SpecialChallengeCard(uiState.specialChallenge) }
             item {
                 EcoButton(
@@ -350,7 +352,7 @@ fun SummaryStatCard(
 @Composable
 fun PreviewHomeScreen() {
     EcoHabitsTheme {
-        HomeScreen()
+        HomeScreen(onEducationClick = {})
     }
 }
 
@@ -359,7 +361,7 @@ fun PreviewHomeScreen() {
 fun PreviewDarkHomeScreen() {
     EcoHabitsTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            HomeScreen()
+            HomeScreen(onEducationClick = {})
         }
     }
 }

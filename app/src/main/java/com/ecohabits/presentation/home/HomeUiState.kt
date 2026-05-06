@@ -13,6 +13,7 @@ data class HomeUiState(
     val weather: WeatherUiState = mockWeather,
     val recommendations: List<RecommendationUiState> = mockRecommendations,
     val specialChallenge: SpecialChallengeUiState = mockSpecialChallenge,
+    val educationTip: EducationTipUiState = mockEducationTip,
     val totalPoints: Int = 150,
     val isLoading: Boolean = false
 )
@@ -37,6 +38,11 @@ data class SpecialChallengeUiState(
     val icon: ImageVector
 )
 
+data class EducationTipUiState(
+    val title: String,
+    val summary: String
+)
+
 // Mocks
 val mockWeather = WeatherUiState(
     condition = "Soleado",
@@ -56,4 +62,9 @@ val mockSpecialChallenge = SpecialChallengeUiState(
     points = 100,
     co2Reduction = "5kg",
     icon = Icons.Default.AutoAwesome
+)
+
+val mockEducationTip = EducationTipUiState(
+    title = "Ahorro de Agua",
+    summary = "Cerrar la llave mientras te cepillas puede ahorrar litros de agua diariamente."
 )
