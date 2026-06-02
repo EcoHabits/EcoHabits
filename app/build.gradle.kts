@@ -77,10 +77,16 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // OAuth
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
     // Supabase
-    implementation(platform(libs.bom))
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.auth.kt)
+    implementation(platform(libs.bom))
 
     // Serialization
     implementation(libs.gson)
