@@ -58,7 +58,7 @@ fun AppNavHost(
         }
         composable("signin") {
             SignInRoute(
-                onNavigateToLogin = { viewModel.selectRoute("login") },
+                onNavigateToHome = { viewModel.selectRoute("home") },
                 onNavigateBack = { viewModel.selectRoute("welcome") }
             )
         }

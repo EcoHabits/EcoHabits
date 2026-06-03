@@ -7,5 +7,7 @@ data class SignInUiState(
     val password: String = "",
     val isLoading: Boolean = false,
     val isEmailValid: Boolean = true,
-    val isFormValid: Boolean = false
+    val isFormValid: Boolean = false,
+    val error: String? = null,
+    val isSuccess: Boolean = false
 )

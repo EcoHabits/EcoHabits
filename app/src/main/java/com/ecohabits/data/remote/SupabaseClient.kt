@@ -1,14 +1,20 @@
 package com.ecohabits.data.remote
+import com.ecohabits.BuildConfig
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 
 
 object SupabaseClient {
     val client: SupabaseClient = createSupabaseClient(
-        supabaseUrl = "https://ugacssjuvwcyukjtytrm.supabase.co",
-        supabaseKey = "sb_publishable_z5oewjHrEgra8pE-rYUgmQ_6gw2JWs9"
+        supabaseUrl = BuildConfig.SUPABASE_URL,
+        supabaseKey = BuildConfig.SUPABASE_PUBLISHABLE_KEY
     ){
         install(Postgrest)
+        install(Auth) {
+            alwaysAutoRefresh = true
+            autoLoadFromStorage = true
+        }
     }
 }
