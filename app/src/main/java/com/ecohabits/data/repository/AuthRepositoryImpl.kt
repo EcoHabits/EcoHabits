@@ -7,6 +7,9 @@ import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.IDToken
+import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -15,6 +18,11 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : AuthRepository {
+
+    override val authState: Flow<Boolean> = supabaseClient.auth.sessionStatus.map { status ->
+        status is SessionStatus.Authenticated
+    }
+
 
     override suspend fun signUp(email: String, password: String, name: String, age: Int): Result<Unit> {
         // TODO: Implementar registro tradicional con Supabase (email/password)

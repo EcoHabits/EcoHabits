@@ -1,7 +1,14 @@
 package com.ecohabits.domain.repository
 
 
+import kotlinx.coroutines.flow.Flow
+
 interface AuthRepository {
+    /**
+     * Flujo que emite true si el usuario está logueado, false si no.
+     */
+    val authState: Flow<Boolean>
+
     /**
      * Registra un nuevo usuario con los datos proporcionados
      */

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.ecohabits.R
 import com.ecohabits.ui.components.EcoButton
 import com.ecohabits.ui.components.EcoCard
 import com.ecohabits.ui.components.EcoTextField
+import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -182,7 +184,7 @@ fun SignInScreen(
                         EcoButton(
                             text = if (uiState.isLoading) "Cargando..." else "Registrarse",
                             onClick = onSignInClick,
-                            enabled = false, // Deshabilitado por ahora como pidió el usuario
+                            enabled = false,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp)
@@ -229,11 +231,10 @@ fun SignInScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Icon(
-                                    imageVector = Icons.Filled.AccountCircle,
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_google_logo),
                                     contentDescription = null,
-                                    modifier = Modifier.size(24.dp),
-                                    tint = MaterialTheme.colorScheme.primary
+                                    modifier = Modifier.size(24.dp)
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
@@ -252,6 +253,46 @@ fun SignInScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SignInScreenPreview() {
+    EcoHabitsTheme {
+        SignInScreen(
+            uiState = SignInUiState(
+                name = "Juan Pérez",
+                email = "juan@example.com",
+                isFormValid = true
+            ),
+            onNameChange = {},
+            onAgeChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
+            onSignInClick = {},
+            onGoogleSignInClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun SignInScreenDarkPreview() {
+    EcoHabitsTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            SignInScreen(
+                uiState = SignInUiState(),
+                onNameChange = {},
+                onAgeChange = {},
+                onEmailChange = {},
+                onPasswordChange = {},
+                onSignInClick = {},
+                onGoogleSignInClick = {},
+                onBackClick = {}
+            )
         }
     }
 }
