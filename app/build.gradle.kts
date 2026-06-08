@@ -106,6 +106,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.play.services.base)
 
     // Supabase
     implementation(libs.postgrest.kt)

@@ -84,13 +84,15 @@ class SignInViewModel @Inject constructor(
         }
     }
 
+    fun onError(message: String) {
+        _uiState.update { it.copy(error = message, isLoading = false) }
+    }
+
     fun signUp(onSuccess: () -> Unit) {
         if (!_uiState.value.isFormValid) return
         
         _uiState.update { it.copy(isLoading = true, error = null) }
-        
-        // Aquí irá la lógica con el repositorio para registro tradicional
-        // Por ahora simulamos éxito inmediato
+
         onSuccess()
         _uiState.update { it.copy(isLoading = false) }
     }

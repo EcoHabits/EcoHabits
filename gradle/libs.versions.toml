@@ -28,12 +28,14 @@ composeBom = "2026.05.01"
 credentials = "1.6.0"
 ktorClientAndroid = "3.5.0"
 googleid = "1.2.0"
+playServicesBase = "18.5.0"
 
 [libraries]
 # Google
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref= "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref= "credentials"}
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid"}
+play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 
 # Supabase
 bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bom" }
