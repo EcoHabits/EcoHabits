@@ -9,6 +9,11 @@ plugins {
 
     // Supabase
     kotlin("plugin.serialization") version "2.2.10"
+
+    // Room
+    // The 2.3.9 is the latest version available in the github page
+    id("com.google.devtools.ksp") version "2.3.9" apply false
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -102,6 +107,9 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // Room / Ksp\
+    ksp("androidx.room:room-compiler:2.8.4")
+
     // OAuth
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
@@ -129,5 +137,18 @@ dependencies {
 
     // gson-converter for retrofit
     implementation(libs.converter.gson.v300)
+
+    // Room DB
+    val room_version = "2.8.4"
+
+    implementation("androidx.room:room-runtime:${room_version}")
+    // As this project uses Kotlin source, we need to use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:${room_version}")
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:${room_version}")
+
 
 }
