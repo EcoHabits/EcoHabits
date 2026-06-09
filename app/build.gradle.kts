@@ -6,10 +6,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     id("androidx.room")
-
-    // KSP / Room
-    id("com.google.devtools.ksp")
-
     // Supabase
     kotlin("plugin.serialization") version "2.2.10"
 }
