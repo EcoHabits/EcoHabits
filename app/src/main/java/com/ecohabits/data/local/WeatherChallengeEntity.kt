@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "TblChallenges")
 data class WeatherChallengeEntity (
     @PrimaryKey
-    val id : Int,
+    val id : String,
     val ChallengeName : String,
     val ChallengeDescription : String
 
