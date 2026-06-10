@@ -1,8 +1,7 @@
-package com.ecohabits.data.local
+package com.ecohabits.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ecohabits.core.model.HabitCategory
 
 @Entity(tableName = "TblChallenges")
 data class WeatherChallengeEntity (
