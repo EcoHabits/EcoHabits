@@ -7,5 +7,5 @@ import com.ecohabits.domain.model.WeatherChallenge
 @Dao
 interface WeatherChallengeDAO {
     @Query ("SELECT * FROM TblChallenges")
-    fun LoadAllChallenges(): Array<WeatherChallenge>
+    fun loadAllChallenges(): Array<WeatherChallenge>
 }

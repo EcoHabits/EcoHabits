@@ -5,9 +5,11 @@ import com.ecohabits.data.local.WeatherCondition
 
 data class WeatherChallenge(
     val id: String,
-    val weatherCondition: WeatherCondition,
+    /*val weatherCondition: WeatherCondition,
     val category: HabitCategory,
     val titleEs: String,
-    val messageEs: String
+    val messageEs: String*/
+    val ChallengeName: String,
+    val ChallengeDescription: String
 )
 
