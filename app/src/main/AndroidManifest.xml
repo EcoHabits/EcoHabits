@@ -24,10 +24,22 @@
             </intent-filter>
         </activity>
 
-        <!-- Supabase Internet Access Permission -->
-<!--        <uses-permission android:name="android.permission.INTERNET" />-->
+        <!--Google Coordinates-->
+        <!-- Recommended for Android 9 (API level 28) and lower. -->
+        <!-- Required for Android 10 (API level 29) and higher. -->
+        <service
+            android:name=".services.LocationForegroundService"
+            android:foregroundServiceType="location"
+            tools:ignore="Instantiatable">
+        </service>
     </application>
+
     <!-- Supabase Internet Access Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--Google Coordinates-->
+    <!-- Always include this permission -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

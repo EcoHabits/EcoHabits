@@ -9,4 +9,5 @@ import com.ecohabits.domain.model.WeatherChallenge
 interface WeatherChallengeDAO {
     @Query ("SELECT * FROM TblChallenges")
     fun loadAllChallenges(): LiveData<List<WeatherChallenge>>
+    // Live Data nos permite que el estado de los datos coincida con la ui, ademas de evitar fugas de memoria
 }

@@ -142,4 +142,7 @@ dependencies {
     implementation("androidx.room:room-ktx:${room_version}")
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:${room_version}")
+
+    // Coordinates Google
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }

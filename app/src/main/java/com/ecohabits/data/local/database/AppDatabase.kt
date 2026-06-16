@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.ecohabits.data.local.entity.WeatherChallengeEntity
 import com.ecohabits.data.local.dao.WeatherChallengeDAO
 
-@Database(entities = [WeatherChallengeEntity::class], version = 1)
+@Database(entities = [WeatherChallengeEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherChallengeDAO() : WeatherChallengeDAO
     // Se usa companion object ya que es una especie de singleton y esto nos permite garantizar que solo se cree una instancia de la base de datos
@@ -16,6 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null
         fun getDataBase(context: Context) : AppDatabase{
             // Importante pasar el context como parametro porque mas adelante lo usaremos para obtener el contexto de la aplicacion
+            // A como se menciono aqui usamos el contexto de actividad pasando como parametro this
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
