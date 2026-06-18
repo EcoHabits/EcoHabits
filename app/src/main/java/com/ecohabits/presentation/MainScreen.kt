@@ -14,6 +14,7 @@ import com.ecohabits.navigation.AppNavHost
 import com.ecohabits.navigation.NavItems
 import com.ecohabits.navigation.NavigationViewModel
 import com.ecohabits.ui.components.BottomNavigationBar
+import com.ecohabits.ui.components.LocationPermissionHandler
 import com.ecohabits.ui.theme.EcoHabitsTheme
 
 @Composable
@@ -29,6 +30,12 @@ fun MainScreen() {
         val showBottomBar = state.currentRoute in navItems.map { it.route }
 
         val selectedIndex = navItems.indexOfFirst { it.route == state.currentRoute }.coerceAtLeast(0)
+
+        // Se llama al manejador de permisos
+        LocationPermissionHandler(onPermissionsDenied = {
+
+            }
+        )
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
