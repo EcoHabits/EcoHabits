@@ -2,6 +2,7 @@ package com.ecohabits.di
 
 import com.ecohabits.data.remote.LocationApi
 import com.ecohabits.data.remote.WeatherApi
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +26,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
+    fun provideGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory {
+        return GsonConverterFactory.create(gson)
     }
 
     @Provides
