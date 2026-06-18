@@ -146,4 +146,7 @@ dependencies {
 
     // Coordinates Google
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    // Gemini
+    implementation(libs.generativeai)
 }
