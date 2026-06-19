@@ -1,6 +1,10 @@
 package com.ecohabits.di
 
-import com.ecohabits.data.remote.SupabaseClient
+import com.ecohabits.BuildConfig
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.postgrest.Postgrest
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,10 +13,20 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SupabaseModule{
+object SupabaseModule {
+
     @Provides
     @Singleton
-    fun provideSupabaseClient(): io.github.jan.supabase.SupabaseClient {
-        return SupabaseClient.client
+    fun provideSupabaseClient(): SupabaseClient {
+        return createSupabaseClient(
+            supabaseUrl = BuildConfig.SUPABASE_URL,
+            supabaseKey = BuildConfig.SUPABASE_PUBLISHABLE_KEY
+        ) {
+            install(Postgrest)
+            install(Auth) {
+                alwaysAutoRefresh = true
+                autoLoadFromStorage = true
+            }
+        }
     }
 }

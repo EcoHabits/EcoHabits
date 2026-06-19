@@ -1,9 +1,10 @@
 package com.ecohabits.domain.model
 
-data class Challenge (
-    val idChallenge: Int,
-    val titleChallenge: String,
-    val descriptionChallenge: String,
-    val challengeStatus: Boolean,
-    val pointsChallenge: Int
+data class Challenge(
+    val id: String,
+    val title: String,
+    val description: String,
+    val category: HabitCategory,
+    val points: Int,
+    val isCompleted: Boolean = false
 )

@@ -1,4 +1,4 @@
-package com.ecohabits.core.model
+package com.ecohabits.domain.model
 
 enum class HabitCategory {
     AGUA,
@@ -6,4 +6,3 @@ enum class HabitCategory {
     RESIDUOS,
     MOVILIDAD
 }
-

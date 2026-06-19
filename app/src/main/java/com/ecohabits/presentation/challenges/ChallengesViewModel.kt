@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.ecohabits.data.local.dao.WeatherChallengeDAO
 import com.ecohabits.domain.model.Challenge
-import com.ecohabits.domain.model.WeatherChallenge
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

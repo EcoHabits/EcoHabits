@@ -1,6 +1,6 @@
 package com.ecohabits.domain.usecase
 
-import com.ecohabits.domain.model.WeatherChallenge
+import com.ecohabits.domain.model.Challenge
 import com.ecohabits.domain.repository.HabitRepository
 import javax.inject.Inject
 

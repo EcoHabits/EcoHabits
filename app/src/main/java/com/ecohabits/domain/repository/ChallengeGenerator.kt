@@ -1,11 +1,11 @@
 package com.ecohabits.domain.repository
 
-import com.ecohabits.data.local.WeatherCondition
+import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.model.Challenge
 
 interface ChallengeGenerator {
     /**
-     * Genera una lista de retos basados en la condición climática.
+     * Genera una lista de retos basados en la ciudad y la condición climática.
      */
-    suspend fun generateChallenges(weather: WeatherCondition): List<Challenge>
+    suspend fun generateChallenges(city: String, weather: WeatherCondition): List<Challenge>
 }

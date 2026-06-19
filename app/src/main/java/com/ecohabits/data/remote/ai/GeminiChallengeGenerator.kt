@@ -1,6 +1,7 @@
 package com.ecohabits.data.remote.ai
 
-import com.ecohabits.data.local.WeatherCondition
+import com.ecohabits.domain.model.HabitCategory
+import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.model.Challenge
 import com.ecohabits.domain.repository.ChallengeGenerator
 import com.google.ai.client.generativeai.GenerativeModel
@@ -14,10 +15,10 @@ class GeminiChallengeGenerator @Inject constructor(
     private val gson: Gson
 ) : ChallengeGenerator {
 
-    override suspend fun generateChallenges(weather: WeatherCondition): List<Challenge> {
+    override suspend fun generateChallenges(city: String, weather: WeatherCondition): List<Challenge> {
         val prompt = """
             Actúa como un experto en sostenibilidad y ecología urbana. 
-            El clima actual es $weather.
+            El usuario está en la ciudad de $city y el clima actual es $weather.
             Genera exactamente 3 retos ecológicos diarios que sean prácticos y relevantes para este clima.
             
             Responde EXCLUSIVAMENTE en formato JSON con la siguiente estructura:
@@ -44,11 +45,12 @@ class GeminiChallengeGenerator @Inject constructor(
             
             dto.challenges.mapIndexed { index, item ->
                 Challenge(
-                    idChallenge = index, // Opcional, Room generará uno real luego
-                    titleChallenge = item.title,
-                    descriptionChallenge = item.description,
-                    challengeStatus = false,
-                    pointsChallenge = item.points
+                    id = "gen_$index", 
+                    title = item.title,
+                    description = item.description,
+                    category = try { HabitCategory.valueOf(item.category) } catch (e: Exception) { HabitCategory.RESIDUOS },
+                    points = item.points,
+                    isCompleted = false
                 )
             }
         } catch (e: Exception) {
