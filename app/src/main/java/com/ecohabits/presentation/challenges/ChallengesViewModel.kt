@@ -12,6 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChallengesViewModel @Inject constructor() : ViewModel() {
+class ChallengesViewModel @Inject constructor(private val weatherChallengeDAO: WeatherChallengeDAO) : ViewModel() {
+    val allChallenges = weatherChallengeDAO.loadAllChallenges()
 }
-

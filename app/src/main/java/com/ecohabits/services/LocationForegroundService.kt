@@ -34,6 +34,7 @@ class LocationForegroundService : Service() {
                     Log.d("LocationService", "Nueva ubicación: Lat $latitude, Lon $longitude")
 
                     // TODO: Aquí puedes enviar los datos a tu base de datos o ViewModel
+                    LocationTracker.updateLocation(location)
                 }
             }
         }

@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.domain.model.Challenge
+import com.ecohabits.domain.model.HabitCategory
 import com.ecohabits.ui.components.EcoCard
 import com.ecohabits.ui.components.EcoListItem
 import com.ecohabits.ui.theme.BackgroundBar
@@ -49,15 +50,15 @@ import com.ecohabits.ui.theme.ProgressBar
 fun ChallengesScreen() {
     val challenges = remember {
         mutableStateListOf(
-            Challenge(1, "Reduce el uso del agua en la ducha", "Ducha de 5 minutos o menos", false, 10),
-            Challenge(2, "Apaga las luces", "Al salir de una habitación", false, 10),
-            Challenge(3, "Usa bolsas reutilizables", "Evita las bolsas de plástico", false, 10),
-            Challenge(4, "Desconecta aparatos", "Si no los estás usando", false, 10),
-            Challenge(5, "Recicla", "Separa papel, plástico y vidrio", false, 10)
+            Challenge("1", "Reduce el uso del agua en la ducha", "Ducha de 5 minutos o menos", HabitCategory.AGUA, 10, true),
+            Challenge("2", "Apaga las luces", "Al salir de una habitación", HabitCategory.MOVILIDAD, 10, true),
+            Challenge("3", "Usa bolsas reutilizables", "Evita las bolsas de plástico", HabitCategory.ENERGIA, 10, false),
+            Challenge("4", "Desconecta aparatos", "Si no los estás usando", HabitCategory.RESIDUOS, 10, true),
+            Challenge("5", "Recicla", "Separa papel, plástico y vidrio", HabitCategory.AGUA, 10, false)
         )
     }
 
-    val completedCount = challenges.count { it.challengeStatus }
+    val completedCount = challenges.count { it.isCompleted }
     val currentProgress = if (challenges.isNotEmpty()) {
         completedCount.toFloat() / challenges.size
     } else 0f
@@ -83,13 +84,13 @@ fun ChallengesScreen() {
 
             items(challenges) { challenge ->
                 AtomCheckBox(
-                    title = challenge.titleChallenge,
-                    subtitle = challenge.descriptionChallenge,
-                    isChecked = challenge.challengeStatus,
+                    title = challenge.title,
+                    subtitle = challenge.description,
+                    isChecked = challenge.isCompleted,
                     onCheckedChange = { isChecked ->
                         val index = challenges.indexOf(challenge)
                         if (index != -1) {
-                            challenges[index] = challenge.copy(challengeStatus = isChecked)
+                            challenges[index] = challenge.copy(isCompleted = isChecked)
                         }
                     }
                 )
