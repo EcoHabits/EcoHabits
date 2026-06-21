@@ -20,21 +20,22 @@ class LocationForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        // 1. Inicializamos el cliente de ubicación de Google
+        // se inicializa el cliente de ubicación de Google
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // 2. Definimos qué hacer cuando recibamos una nueva ubicación
+        // lo que se hace cuando se recibe una nueva ubicacioin
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                for (location in locationResult.locations) {
-                    // AQUÍ TIENES LA UBICACIÓN REAL
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-
-                    Log.d("LocationService", "Nueva ubicación: Lat $latitude, Lon $longitude")
-
-                    // TODO: Aquí puedes enviar los datos a tu base de datos o ViewModel
+                val location = locationResult.lastLocation
+                if (location != null) {
+                    Log.d("LocationService", "Ubicación obtenida: Lat ${location.latitude}, Lon ${location.longitude}")
+                    
+                    // Actualizamos el tracker con la ubicación real
                     LocationTracker.updateLocation(location)
+                    
+                    // ONESHOT: Una vez obtenida la ubicación, detenemos las actualizaciones y el servicio
+                    fusedLocationClient.removeLocationUpdates(this)
+                    stopSelf()
                 }
             }
         }
@@ -42,30 +43,31 @@ class LocationForegroundService : Service() {
 
     @SuppressLint("MissingPermission")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // 3. Iniciamos el servicio en modo Foreground (con notificación)
+        // servicio en modo Foreground (con notificación solo cuando se esta ejecutando la app)
         startForeground(1, createNotification())
 
-        // 4. Configuramos la frecuencia con la que queremos recibir la ubicación
+        // 4. Configuramos la solicitud de ubicación
+        // Usamos un intervalo corto inicialmente para obtener la primera ubicación rápido
         val locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, // Máxima precisión (usa GPS)
-            10000 // Intervalo de 10 segundos
-        ).setMinUpdateIntervalMillis(5000) // No actualizar más rápido de cada 5 seg
+            Priority.PRIORITY_HIGH_ACCURACY,
+            5000 
+        ).setMaxUpdates(1) // Solo queremos una actualización
             .build()
 
-        // 5. Solicitamos las actualizaciones
+        // 5. Solicitamos la actualización
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
             Looper.getMainLooper()
         )
 
-        // START_STICKY hace que si el sistema mata el servicio, intente recrearlo
-        return START_STICKY
+        // START_NOT_STICKY: No hace falta recrearlo si se mata, ya que se lanza al abrir la app
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // 6. MUY IMPORTANTE: Detenemos el GPS cuando el servicio se cierra
+      //Detenemos el GPS cuando el servicio se cierra
         fusedLocationClient.removeLocationUpdates(locationCallback)
         Log.d("LocationService", "Servicio detenido y GPS apagado")
     }
