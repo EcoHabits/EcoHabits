@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,31 +45,44 @@ import com.ecohabits.ui.theme.GreenSuccess
 fun HomeScreen(
     uiState: HomeUiState = HomeUiState()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        HomeTopBar()
-        LazyColumn(
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .background(MaterialTheme.colorScheme.background)
         ) {
-            item { GreetingSection(uiState.userName, uiState.streakDays) }
-            item { WeatherCard(uiState.weather) }
-            item { RecommendationsSection(uiState.recommendations) }
-            item { SpecialChallengeCard(uiState.specialChallenge) }
-            item {
-                EcoButton(
-                    onClick = { /* TODO */ },
-                    text = "Ver Todos los Desafíos",
-                    modifier = Modifier.fillMaxWidth()
-                )
+            HomeTopBar()
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                item { GreetingSection(uiState.userName, uiState.streakDays) }
+                item { WeatherCard(uiState.weather) }
+                item { RecommendationsSection(uiState.recommendations) }
+                item { SpecialChallengeCard(uiState.specialChallenge) }
+                item {
+                    EcoButton(
+                        onClick = { /* TODO */ },
+                        text = "Ver Todos los Desafíos",
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                item { SummaryStatsSection(uiState.totalPoints, uiState.streakDays) }
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
-            item { SummaryStatsSection(uiState.totalPoints, uiState.streakDays) }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+        }
+
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = GreenSuccess)
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ fun ChallengeDto.toDomain(): Challenge {
 
 fun Challenge.toDto(city: String, weather: String): ChallengeDto {
     return ChallengeDto(
-        idChallenge = if (id.startsWith("gen_")) null else id, // Si es generado por Gemini, dejamos que Supabase asigne UUID
+        idChallenge = null, // Siempre nulo al guardar para que Supabase genere el UUID
         challengeName = title,
         challengeDescription = description,
         challengeCategory = category.name,

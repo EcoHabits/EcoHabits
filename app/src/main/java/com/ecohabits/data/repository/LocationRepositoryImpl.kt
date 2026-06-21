@@ -11,8 +11,10 @@ class LocationRepositoryImpl @Inject constructor(
     override suspend fun getCityName(lat: Double, lon: Double): String {
         return try {
             val response = locationApi.getCity(lat, lon)
-            // Tomamos la ciudad del DTO. Si viene nulo, devolvemos un valor por defecto.
-            response.address.city ?: "Ciudad desconocida"
+            val addr = response.address
+            
+            // Priorizamos city, luego town, luego village, luego suburb
+            addr.city ?: addr.town ?: addr.village ?: addr.suburb ?: "Ciudad desconocida"
         } catch (e: Exception) {
             "Error al obtener ciudad"
         }

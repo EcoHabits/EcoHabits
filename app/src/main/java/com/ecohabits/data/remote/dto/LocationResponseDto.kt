@@ -9,5 +9,11 @@ data class LocationResponseDto(
 
 data class Address(
     @SerializedName("city")
-    val city: String
+    val city: String? = null,
+    @SerializedName("town")
+    val town: String? = null,
+    @SerializedName("village")
+    val village: String? = null,
+    @SerializedName("suburb")
+    val suburb: String? = null
 )

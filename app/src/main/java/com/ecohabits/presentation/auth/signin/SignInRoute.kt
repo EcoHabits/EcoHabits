@@ -20,6 +20,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 import java.util.UUID
 
 @Composable
@@ -67,12 +68,16 @@ fun SignInRoute(
                     }
 
                     val rawNonce = UUID.randomUUID().toString()
+                    val bytes = rawNonce.toByteArray()
+                    val md = MessageDigest.getInstance("SHA-256")
+                    val digest = md.digest(bytes)
+                    val hashedNonce = digest.joinToString("") { "%02x".format(it) }
                     
                     val googleIdOption = GetGoogleIdOption.Builder()
                         .setFilterByAuthorizedAccounts(false)
                         .setServerClientId(BuildConfig.GOOGLE_WEB_CLIENT_ID)
                         .setAutoSelectEnabled(false)
-                        .setNonce(rawNonce)
+                        .setNonce(hashedNonce)
                         .build()
 
                     val request = GetCredentialRequest.Builder()

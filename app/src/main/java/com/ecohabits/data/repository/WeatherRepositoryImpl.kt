@@ -18,11 +18,13 @@ class WeatherRepositoryImpl @Inject constructor(
         return when (code) {
             0 -> WeatherCondition.SUNNY
             in 1..3 -> WeatherCondition.CLOUDY
-            in 45..48 -> WeatherCondition.CLOUDY // Fog
-            in 51..67 -> WeatherCondition.RAINY // Drizzle / Rain
-            in 71..77 -> WeatherCondition.COLD // Snow
-            in 80..82 -> WeatherCondition.RAINY // Rain showers
-            in 95..99 -> WeatherCondition.WINDY // Thunderstorm
+            in 45..48 -> WeatherCondition.CLOUDY // Niebla
+            in 51..55, in 61..67, in 80..82 -> WeatherCondition.RAINY // Llovizna, Lluvia y Chubascos
+            in 71..77, in 85..86 -> WeatherCondition.COLD // Nieve y granizo
+            in 95..99 -> WeatherCondition.WINDY // Tormentas
+            // Nota: Para condiciones de calor extremo (HOT), Open-Meteo no tiene un código específico, 
+            // se suele inferir por temperatura, pero para este flujo lo mapearemos a SUNNY o UNKNOWN 
+            // a menos que se quiera añadir lógica de temperatura luego.
             else -> WeatherCondition.UNKNOWN
         }
     }

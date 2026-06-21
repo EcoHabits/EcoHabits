@@ -28,7 +28,7 @@ generativeai = "0.9.0"
 
 composeBom = "2026.05.01"
 credentials = "1.6.0"
-ktorClientAndroid = "3.5.0"
+ktorClientAndroid = "3.0.3"
 googleid = "1.2.0"
 playServicesBase = "18.5.0"
 
@@ -42,6 +42,10 @@ play-services-base = { module = "com.google.android.gms:play-services-base", ver
 # Supabase
 bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bom" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientAndroid" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientAndroid" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientAndroid" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientAndroid" }
 auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "bom"}
 
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }

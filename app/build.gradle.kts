@@ -25,7 +25,6 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        android.buildFeatures.buildConfig = true
 
         val properties = Properties()
         val localPropertiesFile = project.rootProject.file("local.properties")
@@ -36,8 +35,7 @@ android {
         buildConfigField("String", "SUPABASE_PUBLISHABLE_KEY", "\"${properties.getProperty("SUPABASE_PUBLISHABLE_KEY") ?: ""}\"")
         buildConfigField("String", "SUPABASE_URL", "\"${properties.getProperty("SUPABASE_URL") ?: ""}\"")
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"${properties.getProperty("GOOGLE_WEB_CLIENT_ID") ?: ""}\"")
-        buildConfigField("String", "GEMINI_API_KEY", "\"${properties.getProperty("GEMINI_API_KEY") ?: ""}\"")
-
+        buildConfigField("String", "OPEN_ROUTER_API_KEY", "\"${properties.getProperty("OPEN_ROUTER_API_KEY") ?: ""}\"")
     }
 
     signingConfigs {
@@ -67,6 +65,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -87,9 +86,6 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.arrow.core)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -112,6 +108,10 @@ dependencies {
     // Supabase
     implementation(libs.postgrest.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
     implementation(libs.auth.kt)
     implementation(platform(libs.bom))
 
@@ -146,7 +146,4 @@ dependencies {
 
     // Coordinates Google
     implementation("com.google.android.gms:play-services-location:21.3.0")
-
-    // Gemini
-    implementation(libs.generativeai)
 }

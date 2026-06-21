@@ -4,33 +4,20 @@ import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Assignment
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecohabits.domain.model.Challenge
@@ -42,58 +29,88 @@ import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
 import com.ecohabits.ui.theme.ProgressBar
 
-// ==========================================
-// MAIN SCREEN
-// ==========================================
-
 @Composable
-fun ChallengesScreen() {
-    val challenges = remember {
-        mutableStateListOf(
-            Challenge("1", "Reduce el uso del agua en la ducha", "Ducha de 5 minutos o menos", HabitCategory.AGUA, 10, true),
-            Challenge("2", "Apaga las luces", "Al salir de una habitación", HabitCategory.MOVILIDAD, 10, true),
-            Challenge("3", "Usa bolsas reutilizables", "Evita las bolsas de plástico", HabitCategory.ENERGIA, 10, false),
-            Challenge("4", "Desconecta aparatos", "Si no los estás usando", HabitCategory.RESIDUOS, 10, true),
-            Challenge("5", "Recicla", "Separa papel, plástico y vidrio", HabitCategory.AGUA, 10, false)
-        )
-    }
-
-    val completedCount = challenges.count { it.isCompleted }
-    val currentProgress = if (challenges.isNotEmpty()) {
-        completedCount.toFloat() / challenges.size
+fun ChallengesScreen(
+    uiState: ChallengesUiState,
+    onChallengeCheckedChange: (Challenge, Boolean) -> Unit,
+    onRetry: () -> Unit
+) {
+    val completedCount = uiState.challenges.count { it.isCompleted }
+    val currentProgress = if (uiState.challenges.isNotEmpty()) {
+        completedCount.toFloat() / uiState.challenges.size
     } else 0f
 
     AtomWallpaper(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            // Esto asegura que todos los EcoCards tengan una separación uniforme
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                AtomChallengueUppBar()
-            }
-
-            item {
-                AtomProgressBar(
-                    progress = currentProgress,
-                    modifier = Modifier.fillMaxWidth()
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (uiState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.primary
                 )
-            }
+            } else if (uiState.error != null) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "¡Ups! Algo salió mal",
+                        style = EcoHabitsTypography().headlineSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                    Text(
+                        text = uiState.error,
+                        style = EcoHabitsTypography().bodyMedium,
+                        textAlign = TextAlign.Center
+                    )
+                    Button(onClick = onRetry) {
+                        Icon(Icons.Default.Refresh, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Reintentar")
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        AtomChallengueUppBar()
+                    }
 
-            items(challenges) { challenge ->
-                AtomCheckBox(
-                    title = challenge.title,
-                    subtitle = challenge.description,
-                    isChecked = challenge.isCompleted,
-                    onCheckedChange = { isChecked ->
-                        val index = challenges.indexOf(challenge)
-                        if (index != -1) {
-                            challenges[index] = challenge.copy(isCompleted = isChecked)
+                    item {
+                        AtomProgressBar(
+                            progress = currentProgress,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    items(uiState.challenges) { challenge ->
+                        AtomCheckBox(
+                            title = challenge.title,
+                            subtitle = challenge.description,
+                            isChecked = challenge.isCompleted,
+                            onCheckedChange = { isChecked ->
+                                onChallengeCheckedChange(challenge, isChecked)
+                            }
+                        )
+                    }
+                    
+                    if (uiState.challenges.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No hay desafíos disponibles para tu ubicación actual.",
+                                modifier = Modifier.fillMaxWidth().padding(top = 32.dp),
+                                textAlign = TextAlign.Center,
+                                style = EcoHabitsTypography().bodyLarge
+                            )
                         }
                     }
-                )
+                }
             }
         }
     }
@@ -121,7 +138,6 @@ fun AtomWallpaper(
 
 @Composable
 fun AtomChallengueUppBar(modifier: Modifier = Modifier) {
-    // Título ahora envuelto en un EcoCard con su respectivo Icono y Tipografía
     EcoCard(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -151,7 +167,6 @@ fun AtomProgressBar(
     progress: Float,
     modifier: Modifier = Modifier
 ) {
-    // Barra de progreso ahora dentro de su propia tarjeta
     EcoCard(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -168,12 +183,12 @@ fun AtomProgressBar(
             )
 
             LinearProgressIndicator(
-                progress = animatedProgress,
+                progress = { animatedProgress },
                 color = ProgressBar,
                 trackColor = BackgroundBar,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(10.dp) // Un poquito más gruesa para resaltar
+                    .height(10.dp)
                     .clip(RoundedCornerShape(16.dp))
             )
         }
@@ -188,7 +203,6 @@ fun AtomCheckBox(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Cada checkbox ahora es una tarjeta clickeable separada
     EcoCard(
         modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -221,19 +235,13 @@ fun AtomCheckBox(
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewScreen() {
+    val mockState = ChallengesUiState(
+        challenges = listOf(
+            Challenge("1", "Reto 1", "Desc 1", HabitCategory.AGUA, 10, false),
+            Challenge("2", "Reto 2", "Desc 2", HabitCategory.ENERGIA, 20, true)
+        )
+    )
     EcoHabitsTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            ChallengesScreen()
-        }
-    }
-}
-
-@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewChallengesDarkMode() {
-    EcoHabitsTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            ChallengesScreen()
-        }
+        ChallengesScreen(mockState, { _, _ -> }, {})
     }
 }

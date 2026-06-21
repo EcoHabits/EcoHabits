@@ -1,5 +1,6 @@
 package com.ecohabits.di
 
+import com.ecohabits.data.remote.AiApi
 import com.ecohabits.data.remote.LocationApi
 import com.ecohabits.data.remote.WeatherApi
 import com.google.gson.Gson
@@ -20,6 +21,10 @@ annotation class WeatherRetrofit
 @Retention(AnnotationRetention.BINARY)
 annotation class LocationRetrofit
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AiRetrofit
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -34,6 +39,8 @@ object NetworkModule {
         return GsonConverterFactory.create(gson)
     }
 
+    // --- WEATHER API CONFIG ---
+    
     @Provides
     @Singleton
     @WeatherRetrofit
@@ -50,6 +57,8 @@ object NetworkModule {
         return retrofit.create(WeatherApi::class.java)
     }
 
+    // --- LOCATION API CONFIG ---
+
     @Provides
     @Singleton
     @LocationRetrofit
@@ -64,5 +73,23 @@ object NetworkModule {
     @Singleton
     fun provideLocationApi(@LocationRetrofit retrofit: Retrofit): LocationApi {
         return retrofit.create(LocationApi::class.java)
+    }
+
+    // --- AI API CONFIG (OpenRouter) ---
+
+    @Provides
+    @Singleton
+    @AiRetrofit
+    fun provideAiRetrofit(gsonConverterFactory: GsonConverterFactory): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://openrouter.ai/")
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiApi(@AiRetrofit retrofit: Retrofit): AiApi {
+        return retrofit.create(AiApi::class.java)
     }
 }

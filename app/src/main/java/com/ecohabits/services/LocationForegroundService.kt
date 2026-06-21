@@ -46,6 +46,14 @@ class LocationForegroundService : Service() {
         // servicio en modo Foreground (con notificación solo cuando se esta ejecutando la app)
         startForeground(1, createNotification())
 
+        // Intentamos obtener la última ubicación conocida inmediatamente para agilizar
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                Log.d("LocationService", "Última ubicación conocida: Lat ${location.latitude}, Lon ${location.longitude}")
+                LocationTracker.updateLocation(location)
+            }
+        }
+
         // 4. Configuramos la solicitud de ubicación
         // Usamos un intervalo corto inicialmente para obtener la primera ubicación rápido
         val locationRequest = LocationRequest.Builder(
