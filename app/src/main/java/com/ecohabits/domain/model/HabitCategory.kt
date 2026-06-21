@@ -4,5 +4,6 @@ enum class HabitCategory {
     AGUA,
     ENERGIA,
     RESIDUOS,
-    MOVILIDAD
+    MOVILIDAD,
+    GENERAL
 }

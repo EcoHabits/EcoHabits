@@ -1,5 +1,6 @@
 package com.ecohabits.data.remote.ai
 
+import com.ecohabits.data.remote.dto.GeminiResponseDto
 import com.ecohabits.domain.model.HabitCategory
 import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.model.Challenge

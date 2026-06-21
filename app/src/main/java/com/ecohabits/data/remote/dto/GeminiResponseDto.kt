@@ -1,4 +1,4 @@
-package com.ecohabits.data.remote.ai
+package com.ecohabits.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

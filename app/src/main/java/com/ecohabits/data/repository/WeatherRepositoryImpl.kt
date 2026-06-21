@@ -1,7 +1,7 @@
 package com.ecohabits.data.repository
 
 import com.ecohabits.data.remote.WeatherApi
-import com.ecohabits.data.remote.WeatherResponseDto
+import com.ecohabits.data.remote.dto.WeatherResponseDto
 import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.repository.WeatherRepository
 import javax.inject.Inject

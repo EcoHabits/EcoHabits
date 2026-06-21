@@ -1,5 +1,6 @@
 package com.ecohabits.data.remote
 
+import com.ecohabits.data.remote.dto.WeatherResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
