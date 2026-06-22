@@ -3,6 +3,7 @@ package com.ecohabits.presentation.challenges
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ecohabits.domain.model.Challenge
+import com.ecohabits.domain.usecase.CompleteChallengeUseCase
 import com.ecohabits.domain.usecase.GetDailyChallengesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChallengesViewModel @Inject constructor(
-    private val getDailyChallengesUseCase: GetDailyChallengesUseCase
+    private val getDailyChallengesUseCase: GetDailyChallengesUseCase,
+    private val completeChallengeUseCase: CompleteChallengeUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengesUiState())
@@ -40,7 +42,8 @@ class ChallengesViewModel @Inject constructor(
 
     fun toggleChallenge(challenge: Challenge, isCompleted: Boolean) {
         viewModelScope.launch {
-            // Actualización optimista en la UI
+            // Actualización optimista en la UI para respuesta instantánea
+            val previousState = _uiState.value
             _uiState.update { state ->
                 state.copy(
                     challenges = state.challenges.map {
@@ -49,8 +52,13 @@ class ChallengesViewModel @Inject constructor(
                 )
             }
             
-            // Aquí iría la llamada al repositorio para actualizar Supabase/Room
-            // challengeRepository.updateChallengeStatus(...)
+            // Persistencia en Supabase
+            completeChallengeUseCase(challenge.id, isCompleted)
+                .onFailure { error ->
+                    // Si falla, revertimos el estado en la UI y notificamos (opcionalmente)
+                    _uiState.value = previousState
+                    _uiState.update { it.copy(error = "No se pudo actualizar el reto: ${error.message}") }
+                }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ecohabits.domain.usecase.auth
+package com.ecohabits.domain.usecase
 
 import com.ecohabits.domain.repository.AuthRepository
 import javax.inject.Inject

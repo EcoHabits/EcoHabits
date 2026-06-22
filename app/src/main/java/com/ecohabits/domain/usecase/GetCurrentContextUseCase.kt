@@ -18,7 +18,7 @@ class GetCurrentContextUseCase @Inject constructor(
     suspend operator fun invoke(): UserContext? {
         Log.d("UserContext", "Iniciando obtención de contexto...")
         
-        // 1. Esperamos ubicación con un tiempo límite de 10 segundos
+        //Esperamos ubicacion con un tiempo límite de 10 segundos
         Log.d("UserContext", "Esperando ubicación de LocationTracker...")
         val location = withTimeoutOrNull(10000) {
             LocationTracker.locationData.filterNotNull().first()

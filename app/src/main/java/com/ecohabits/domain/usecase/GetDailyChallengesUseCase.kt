@@ -38,7 +38,7 @@ class GetDailyChallengesUseCase @Inject constructor(
                 if (generatedChallenges.isNotEmpty()) {
                     Log.d("DailyChallenges", "Retos generados: ${generatedChallenges.size}. Guardando en Supabase...")
                     // Guardamos y recuperamos los retos con sus IDs reales (UUID) asignados por Supabase
-                    challenges = challengeRepository.saveAndFetchChallenges(generatedChallenges, context.cityName, context.weatherCondition)
+                    challenges = challengeRepository.saveChallenges(generatedChallenges, context.cityName, context.weatherCondition)
                 } else {
                     Log.w("DailyChallenges", "OpenRouter no devolvió retos o hubo error en generación")
                 }
@@ -49,6 +49,15 @@ class GetDailyChallengesUseCase @Inject constructor(
             if (challenges.isNotEmpty()) {
                 Log.d("DailyChallenges", "Asignando ${challenges.size} retos al usuario $userId...")
                 challengeRepository.assignChallengesToUser(userId, challenges)
+                
+                // IMPORTANTE: Volvemos a pedir los retos PERO desde la lista del usuario
+                // para obtener el estado real de 'isCompleted' desde Supabase
+                val userChallenges = challengeRepository.getUserChallenges(userId)
+                
+                // Filtramos para devolver solo los que corresponden al contexto actual (opcional, pero recomendado)
+                // O podemos devolver todos los del usuario. Por ahora devolvemos los que coinciden con los IDs obtenidos
+                val currentIds = challenges.map { it.id }.toSet()
+                challenges = userChallenges.filter { it.id in currentIds }
             } else {
                 Log.w("DailyChallenges", "No se pudieron obtener retos de ninguna fuente")
             }

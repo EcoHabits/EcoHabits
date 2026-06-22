@@ -2,7 +2,7 @@ package com.ecohabits.presentation.auth.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ecohabits.domain.usecase.auth.SignInWithGoogleUseCase
+import com.ecohabits.domain.usecase.SignInWithGoogleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -26,13 +26,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUp(email: String, password: String, name: String, age: Int): Result<Unit> {
         // TODO: Implementar registro tradicional con Supabase (email/password)
-        // Sugerencia: usar supabaseClient.auth.signUpWith(Email) y pasar data con name y age
+        // usar supabaseClient.auth.signUpWith(Email) y pasar data con name y age
         return Result.success(Unit)
     }
 
     override suspend fun loginWithEmail(email: String, password: String): Result<Unit> {
         // TODO: Implementar inicio de sesión tradicional con Supabase (email/password)
-        // Sugerencia: usar supabaseClient.auth.signInWith(Email)
+        // usar supabaseClient.auth.signInWith(Email)
         return Result.success(Unit)
     }
 

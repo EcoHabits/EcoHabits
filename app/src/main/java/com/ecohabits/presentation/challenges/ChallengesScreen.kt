@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -204,7 +205,9 @@ fun AtomCheckBox(
     modifier: Modifier = Modifier
 ) {
     EcoCard(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(if (isChecked) 0.6f else 1f),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
