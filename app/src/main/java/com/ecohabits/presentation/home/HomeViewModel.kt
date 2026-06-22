@@ -40,6 +40,7 @@ class HomeViewModel @Inject constructor(
             _uiState.update { state ->
                 state.copy(
                     isLoading = false,
+                    userName = context?.userName ?: "Usuario",
                     cityName = context?.cityName ?: "Ubicación desconocida",
                     weather = state.weather.copy(
                         condition = context?.weatherCondition?.name ?: "Desconocido",

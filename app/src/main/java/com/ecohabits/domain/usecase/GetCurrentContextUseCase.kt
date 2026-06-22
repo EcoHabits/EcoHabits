@@ -3,6 +3,7 @@ package com.ecohabits.domain.usecase
 import android.util.Log
 import com.ecohabits.domain.model.UserContext
 import com.ecohabits.domain.model.WeatherCondition
+import com.ecohabits.domain.repository.AuthRepository
 import com.ecohabits.domain.repository.LocationRepository
 import com.ecohabits.domain.repository.WeatherRepository
 import com.ecohabits.services.LocationTracker
@@ -13,12 +14,16 @@ import javax.inject.Inject
 
 class GetCurrentContextUseCase @Inject constructor(
     private val locationRepository: LocationRepository,
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(): UserContext? {
         Log.d("UserContext", "Iniciando obtención de contexto...")
         
-        //Esperamos ubicacion con un tiempo límite de 10 segundos
+        // 1. Obtenemos el nombre del usuario (local de la sesión)
+        val userName = authRepository.getCurrentUserName()
+        
+        // 2. Esperamos ubicación con un tiempo límite de 10 segundos
         Log.d("UserContext", "Esperando ubicación de LocationTracker...")
         val location = withTimeoutOrNull(10000) {
             LocationTracker.locationData.filterNotNull().first()
@@ -28,6 +33,7 @@ class GetCurrentContextUseCase @Inject constructor(
             Log.w("UserContext", "GPS no detectado. Generando contexto sin clima.")
             return UserContext(
                 cityName = "Ubicación desconocida",
+                userName = userName,
                 weatherCondition = null
             )
         }
@@ -50,10 +56,11 @@ class GetCurrentContextUseCase @Inject constructor(
             null
         }
 
-        Log.d("UserContext", "Contexto final -> Ciudad: $cityName, Clima: $weather")
+        Log.d("UserContext", "Contexto final -> Ciudad: $cityName, Usuario: $userName, Clima: $weather")
         
         return UserContext(
             cityName = cityName,
+            userName = userName,
             weatherCondition = weather
         )
     }

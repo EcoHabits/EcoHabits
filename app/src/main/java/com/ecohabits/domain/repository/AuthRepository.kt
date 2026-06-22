@@ -38,4 +38,9 @@ interface AuthRepository {
      * Obtiene el ID del usuario actual si existe
      */
     fun getCurrentUserId(): String?
+
+    /**
+     * Obtiene el nombre del usuario actual desde los metadatos de la sesión
+     */
+    fun getCurrentUserName(): String?
 }
