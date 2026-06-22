@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Star
@@ -33,9 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecohabits.ui.components.EcoButton
 import com.ecohabits.ui.components.EcoCard
 import com.ecohabits.ui.theme.EcoHabitsTheme
 import com.ecohabits.ui.theme.EcoHabitsTypography
@@ -58,17 +58,9 @@ fun HomeScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
+                item { Spacer(modifier = Modifier.height(40.dp)) }
                 item { GreetingSection(uiState.userName, uiState.streakDays) }
-                item { WeatherCard(uiState.weather) }
-                item { RecommendationsSection(uiState.recommendations) }
-                item { SpecialChallengeCard(uiState.specialChallenge) }
-                item {
-                    EcoButton(
-                        onClick = { /* TODO */ },
-                        text = "Ver Todos los Desafíos",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                item { WeatherCard(uiState.weather, uiState.cityName) }
                 item { SummaryStatsSection(uiState.totalPoints, uiState.streakDays) }
                 item { Spacer(modifier = Modifier.height(16.dp)) }
             }
@@ -113,182 +105,74 @@ fun HomeTopBar() {
 
 @Composable
 fun GreetingSection(userName: String, streakDays: Int) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = "¡Hola! $userName 👋",
             style = EcoHabitsTypography().headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
         )
         Text(
             text = "Llevas $streakDays días consecutivos",
             style = EcoHabitsTypography().bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            textAlign = TextAlign.Center
         )
     }
 }
 
 @Composable
-fun WeatherCard(weather: WeatherUiState) {
+fun WeatherCard(weather: WeatherUiState, cityName: String) {
     EcoCard(
         modifier = Modifier.fillMaxWidth(),
         containerColor = Color(0xFF64B5F6) // Color azul para el clima
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = "Clima Actual",
-                        style = EcoHabitsTypography().labelLarge,
-                        color = Color.White.copy(alpha = 0.8f)
-                    )
-                    Text(
-                        text = weather.condition,
-                        style = EcoHabitsTypography().headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Text(
-                        text = weather.temperature,
-                        style = EcoHabitsTypography().titleLarge,
-                        color = Color.White
-                    )
-                }
-                Icon(
-                    imageVector = Icons.Default.WbSunny,
-                    contentDescription = null,
-                    modifier = Modifier.size(80.dp),
-                    tint = Color.White
-                )
-            }
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = cityName,
+                style = EcoHabitsTypography().titleMedium,
+                color = Color.White.copy(alpha = 0.9f)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Icon(
+                imageVector = getWeatherIcon(weather.condition),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp),
+                tint = Color.White
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = weather.condition,
+                style = EcoHabitsTypography().headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
             Spacer(modifier = Modifier.height(16.dp))
             HorizontalDivider(color = Color.White.copy(alpha = 0.3f))
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = weather.advice,
                 style = EcoHabitsTypography().bodyMedium,
-                color = Color.White
+                color = Color.White,
+                textAlign = TextAlign.Center
             )
         }
     }
 }
 
-@Composable
-fun RecommendationsSection(recommendations: List<RecommendationUiState>) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(
-            text = "Recomendaciones para Hoy",
-            style = EcoHabitsTypography().titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        recommendations.forEach { recommendation ->
-            RecommendationItem(recommendation)
-        }
-    }
-}
-
-@Composable
-fun RecommendationItem(recommendation: RecommendationUiState) {
-    EcoCard(
-        modifier = Modifier.fillMaxWidth(),
-        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(GreenSuccess.copy(alpha = 0.1f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = recommendation.icon,
-                    contentDescription = null,
-                    tint = GreenSuccess,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = recommendation.text,
-                style = EcoHabitsTypography().bodyMedium,
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Box(
-                modifier = Modifier
-                    .background(GreenSuccess, RoundedCornerShape(12.dp))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Text(
-                    text = "+${recommendation.points}",
-                    style = EcoHabitsTypography().labelSmall,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SpecialChallengeCard(challenge: SpecialChallengeUiState) {
-    EcoCard(
-        modifier = Modifier.fillMaxWidth(),
-        containerColor = GreenSuccess.copy(alpha = 0.8f)
-    ) {
-        Row(
-            modifier = Modifier.padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Color.White, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = challenge.icon,
-                    contentDescription = null,
-                    tint = GreenSuccess,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = "DESAFÍO ESPECIAL",
-                    style = EcoHabitsTypography().labelSmall,
-                    color = Color.White.copy(alpha = 0.8f),
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = challenge.title,
-                    style = EcoHabitsTypography().titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Text(
-                    text = challenge.description,
-                    style = EcoHabitsTypography().bodyMedium,
-                    color = Color.White
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "+${challenge.points} puntos  •  Reduce ${challenge.co2Reduction} de CO2",
-                    style = EcoHabitsTypography().labelSmall,
-                    color = Color.White.copy(alpha = 0.9f)
-                )
-            }
-        }
+private fun getWeatherIcon(condition: String): ImageVector {
+    return when (condition.uppercase()) {
+        "SUNNY", "HOT" -> Icons.Default.WbSunny
+        "RAINY", "CLOUDY" -> Icons.Default.Cloud
+        "COLD" -> Icons.Default.AcUnit
+        else -> Icons.Default.Cloud
     }
 }
 
@@ -364,7 +248,19 @@ fun SummaryStatCard(
 @Composable
 fun PreviewHomeScreen() {
     EcoHabitsTheme {
-        HomeScreen()
+        HomeScreen(
+            uiState = HomeUiState(
+                userName = "Gab",
+                cityName = "Monterrey",
+                streakDays = 5,
+                weather = WeatherUiState(
+                    condition = "Sunny",
+                    temperature = "28°C",
+                    advice = "Aprovecha el clima de hoy para acciones sostenibles"
+                ),
+                totalPoints = 250
+            )
+        )
     }
 }
 
