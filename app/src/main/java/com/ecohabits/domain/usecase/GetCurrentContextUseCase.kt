@@ -1,6 +1,7 @@
 package com.ecohabits.domain.usecase
 
 import android.util.Log
+import com.ecohabits.data.local.dao.UserDAO
 import com.ecohabits.domain.model.UserContext
 import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.repository.AuthRepository
@@ -19,7 +20,7 @@ class GetCurrentContextUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): UserContext? {
         Log.d("UserContext", "Iniciando obtención de contexto...")
-        
+
         // 1. Obtenemos el nombre del usuario (local de la sesión)
         val userName = authRepository.getCurrentUserName()
         
