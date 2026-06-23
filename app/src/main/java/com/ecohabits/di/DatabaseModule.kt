@@ -1,6 +1,7 @@
 package com.ecohabits.di
 
 import android.content.Context
+import com.ecohabits.data.local.dao.UserDAO
 import com.ecohabits.data.local.dao.WeatherChallengeDAO
 import com.ecohabits.data.local.database.AppDatabase
 import dagger.Module
@@ -22,5 +23,10 @@ object DatabaseModule {
     @Provides
     fun provideWeatherChallengeDAO(database: AppDatabase): WeatherChallengeDAO{
         return database.weatherChallengeDAO()
+    }
+
+    @Provides
+    fun provideUserDAO(database: AppDatabase): UserDAO{
+        return database.userDAO()
     }
 }
