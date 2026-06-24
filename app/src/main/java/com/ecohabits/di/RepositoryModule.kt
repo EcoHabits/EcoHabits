@@ -3,11 +3,12 @@ package com.ecohabits.di
 import com.ecohabits.data.repository.AuthRepositoryImpl
 import com.ecohabits.data.repository.ChallengeRepositoryImpl
 import com.ecohabits.data.repository.LocationRepositoryImpl
+import com.ecohabits.data.repository.UserContextRepositoryImpl
 import com.ecohabits.data.repository.WeatherRepositoryImpl
 import com.ecohabits.domain.repository.AuthRepository
 import com.ecohabits.domain.repository.ChallengeRepository
 import com.ecohabits.domain.repository.LocationRepository
-import com.ecohabits.domain.repository.UserRepository
+import com.ecohabits.domain.repository.UserContextRepository
 import com.ecohabits.domain.repository.WeatherRepository
 import dagger.Binds
 import dagger.Module
@@ -37,6 +38,5 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindUserRepository(impl: UserRepository): UserRepository
+    abstract fun bindUserContextRepository(impl: UserContextRepositoryImpl): UserContextRepository
 }
-

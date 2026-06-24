@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.ecohabits.domain.model.HabitCategory
 
 @Entity(tableName = "TblChallenges")
-data class WeatherChallengeEntity (
+data class ChallengeEntity (
     @PrimaryKey
     val id: String,
     val title: String,

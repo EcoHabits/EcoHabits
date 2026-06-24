@@ -8,7 +8,7 @@ import com.ecohabits.domain.model.WeatherCondition
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface UserDAO {
+interface UserContextDao {
     @Upsert
     suspend fun upsertUser(userContextEntity: UserContextEntity)
 

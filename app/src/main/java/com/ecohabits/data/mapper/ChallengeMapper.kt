@@ -1,5 +1,6 @@
 package com.ecohabits.data.mapper
 
+import com.ecohabits.data.local.entity.ChallengeEntity
 import com.ecohabits.data.remote.dto.ChallengeDto
 import com.ecohabits.domain.model.Challenge
 import com.ecohabits.domain.model.HabitCategory
@@ -15,7 +16,29 @@ fun ChallengeDto.toDomain(): Challenge {
             HabitCategory.RESIDUOS
         },
         points = challengePoints,
-        isCompleted = false // Por defecto al descargar de la tabla maestra
+        isCompleted = false
+    )
+}
+
+fun Challenge.toEntity(): ChallengeEntity {
+    return ChallengeEntity(
+        id = id,
+        title = title,
+        description = description,
+        category = category,
+        points = points,
+        isCompleted = isCompleted
+    )
+}
+
+fun ChallengeEntity.toDomain(): Challenge {
+    return Challenge(
+        id = id,
+        title = title,
+        description = description,
+        category = category,
+        points = points,
+        isCompleted = isCompleted
     )
 }
 
