@@ -29,4 +29,7 @@ interface UserContextDao {
 
     @Query("DELETE FROM TblUser")
     suspend fun deleteUser()
+
+    @Query("UPDATE TblUser SET weatherCondition = :weatherCondition")
+    suspend fun updateWeatherCondition(weatherCondition: WeatherCondition)
 }

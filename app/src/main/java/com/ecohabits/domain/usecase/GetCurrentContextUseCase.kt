@@ -2,6 +2,7 @@ package com.ecohabits.domain.usecase
 
 import android.util.Log
 import com.ecohabits.domain.model.UserContext
+import com.ecohabits.domain.model.WeatherCondition
 import com.ecohabits.domain.repository.AuthRepository
 import com.ecohabits.domain.repository.LocationRepository
 import com.ecohabits.domain.repository.UserContextRepository
@@ -21,43 +22,21 @@ class GetCurrentContextUseCase @Inject constructor(
     suspend operator fun invoke(): UserContext? {
         Log.d("UserContext", "Iniciando obtención de contexto...")
 
-        try {
-            // 1. Obtenemos el nombre del usuario (local de la sesión)
+        return try {
+            // 1. Intentamos obtener datos "frescos"
             val userName = authRepository.getCurrentUserName()
             
-            // 2. Esperamos ubicación con un tiempo límite de 10 segundos
-            Log.d("UserContext", "Esperando ubicación de LocationTracker...")
+            // Timeout de 10 segundos para la ubicación
             val location = withTimeoutOrNull(10000) {
                 LocationTracker.locationData.filterNotNull().first()
-            }
+            } ?: throw Exception("Ubicación no detectada")
 
-            if (location == null) {
-                Log.w("UserContext", "GPS no detectado. Intentando cargar contexto desde Room.")
-                val cachedContext = userContextRepository.getUser().first()
-                return cachedContext ?: UserContext(
-                    cityName = "Ubicación desconocida",
-                    userName = userName,
-                    weatherCondition = null
-                )
-            }
-            
             val lat = location.latitude
             val lon = location.longitude
             Log.d("UserContext", "Ubicación obtenida: $lat, $lon")
 
-            val cityName = try {
-                locationRepository.getCityName(lat, lon)
-            } catch (e: Exception) {
-                Log.e("UserContext", "Error al obtener ciudad: ${e.message}")
-                "Ciudad desconocida"
-            }
-
-            val weather = try {
-                weatherRepository.getWeatherState(lat, lon)
-            } catch (e: Exception) {
-                Log.e("UserContext", "Error al obtener clima: ${e.message}")
-                null
-            }
+            val cityName = locationRepository.getCityName(lat, lon)
+            val weather = weatherRepository.getWeatherState(lat, lon)
 
             val finalContext = UserContext(
                 cityName = cityName,
@@ -65,14 +44,24 @@ class GetCurrentContextUseCase @Inject constructor(
                 weatherCondition = weather
             )
 
+            // Si todo salió bien, guardamos en Room para el futuro
             Log.d("UserContext", "Contexto obtenido con éxito. Guardando en Room.")
             userContextRepository.saveUser(finalContext)
             
-            return finalContext
+            finalContext
 
         } catch (e: Exception) {
-            Log.e("UserContext", "Error crítico obteniendo contexto: ${e.message}. Cargando fallback de Room.")
-            return userContextRepository.getUser().first()
+            Log.w("UserContext", "Error obteniendo datos en vivo: ${e.message}. Cargando fallback de Room.")
+            
+            // 3. FALLBACK: Intentamos recuperar lo último que guardamos en Room
+            val cachedContext = userContextRepository.getUser().first()
+            
+            // Si incluso Room está vacío, devolvemos un objeto por defecto
+            cachedContext ?: UserContext(
+                cityName = "Ubicación desconocida",
+                userName = authRepository.getCurrentUserName(),
+                weatherCondition = WeatherCondition.UNKNOWN
+            )
         }
     }
 }

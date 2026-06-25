@@ -10,6 +10,8 @@ class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi
 ) : WeatherRepository {
     override suspend fun getWeatherState(lat: Double, lon: Double): WeatherCondition {
+        // Solo realizamos la peticion. Si falla, la excepción sube al UseCase donde se maneja
+        // de manera adecuada
         val response: WeatherResponseDto = weatherApi.getWeatherState(lat, lon)
         return mapCodeToCondition(response.current.weatherCode)
     }
