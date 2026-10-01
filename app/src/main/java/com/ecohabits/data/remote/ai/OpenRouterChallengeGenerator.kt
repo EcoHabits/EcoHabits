@@ -50,7 +50,8 @@ class OpenRouterChallengeGenerator @Inject constructor(
         } + """
             
             Para cada reto, asigna una puntuación entre 10 y 100 basada en la dificultad percibida.
-            
+            Además, estima el ahorro de CO2 en kg (co2Savings) y el ahorro de Agua en litros (waterSavings) que supone realizar cada reto.
+
             Responde EXCLUSIVAMENTE en formato JSON con la siguiente estructura:
             {
               "challenges": [
@@ -58,7 +59,9 @@ class OpenRouterChallengeGenerator @Inject constructor(
                   "title": "Título corto y motivador",
                   "description": "Descripción clara y accionable",
                   "points": 50,
-                  "category": "AGUA" 
+                  "category": "AGUA",
+                  "co2Savings": 1.5,
+                  "waterSavings": 20.0
                 }
               ]
             }
@@ -110,7 +113,9 @@ class OpenRouterChallengeGenerator @Inject constructor(
                     description = item.description,
                     category = try { HabitCategory.valueOf(item.category.uppercase()) } catch (_: Exception) { HabitCategory.GENERAL },
                     points = item.points,
-                    isCompleted = false
+                    isCompleted = false,
+                    co2Savings = item.co2Savings ?: 0.0,
+                    waterSavings = item.waterSavings ?: 0.0
                 )
             }
         } catch (e: Exception) {

@@ -15,5 +15,9 @@ data class GeminiChallengeDto(
     @SerializedName("points")
     val points: Int,
     @SerializedName("category")
-    val category: String // Ej: "AGUA", "ENERGIA"
+    val category: String, // Ej: "AGUA", "ENERGIA"
+    @SerializedName("co2Savings")
+    val co2Savings: Double? = 0.0,
+    @SerializedName("waterSavings")
+    val waterSavings: Double? = 0.0
 )

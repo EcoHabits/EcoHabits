@@ -16,7 +16,9 @@ fun ChallengeDto.toDomain(): Challenge {
             HabitCategory.RESIDUOS
         },
         points = challengePoints,
-        isCompleted = false
+        isCompleted = false,
+        co2Savings = co2Savings ?: 0.0,
+        waterSavings = waterSavings ?: 0.0
     )
 }
 
@@ -27,7 +29,9 @@ fun Challenge.toEntity(): ChallengeEntity {
         description = description,
         category = category,
         points = points,
-        isCompleted = isCompleted
+        isCompleted = isCompleted,
+        co2Savings = co2Savings,
+        waterSavings = waterSavings
     )
 }
 
@@ -38,7 +42,9 @@ fun ChallengeEntity.toDomain(): Challenge {
         description = description,
         category = category,
         points = points,
-        isCompleted = isCompleted
+        isCompleted = isCompleted,
+        co2Savings = co2Savings,
+        waterSavings = waterSavings
     )
 }
 
@@ -50,6 +56,8 @@ fun Challenge.toDto(city: String, weather: String): ChallengeDto {
         challengeCategory = category.name,
         cityName = city,
         weatherCondition = weather,
-        challengePoints = points
+        challengePoints = points,
+        co2Savings = co2Savings,
+        waterSavings = waterSavings
     )
 }

@@ -65,7 +65,11 @@ fun AppNavHost(
                 onNavigateBack = { viewModel.selectRoute("welcome") }
             )
         }
-        composable("home") { HomeRoute() }
+        composable("home") { 
+            HomeRoute(
+                onLogoutSuccess = { viewModel.selectRoute("welcome") }
+            ) 
+        }
         composable("challenges") { ChallengesRoute() }
         composable("progress") { ProgressRoute() }
     }

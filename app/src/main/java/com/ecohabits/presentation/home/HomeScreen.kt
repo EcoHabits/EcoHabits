@@ -21,9 +21,11 @@ import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,7 +45,8 @@ import com.ecohabits.ui.theme.GreenSuccess
 
 @Composable
 fun HomeScreen(
-    uiState: HomeUiState = HomeUiState()
+    uiState: HomeUiState = HomeUiState(),
+    onLogoutClick: () -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -51,7 +54,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            HomeTopBar()
+            HomeTopBar(onLogoutClick = onLogoutClick)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -80,7 +83,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(onLogoutClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -100,6 +103,14 @@ fun HomeTopBar() {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = onLogoutClick) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                contentDescription = "Cerrar sesión",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
     }
 }
 
