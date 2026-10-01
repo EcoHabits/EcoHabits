@@ -4,25 +4,64 @@ import com.ecohabits.domain.model.Challenge
 import com.ecohabits.domain.model.WeatherCondition
 
 interface ChallengeRepository {
-    /**
-     * Busca retos en la caché global de Supabase filtrando por ciudad y clima.
-     */
-    suspend fun fetchChallengesByContext(city: String, weather: WeatherCondition?): List<Challenge>
 
     /**
-     * Obtiene los retos asignados a un usuario específico, incluyendo su estado de completado.
+     * Busca retos en la caché global de Supabase
+     * filtrando por ciudad y clima.
      */
-    suspend fun getUserChallenges(userId: String): List<Challenge>
+    suspend fun fetchChallengesByContext(
+        city: String,
+        weather: WeatherCondition?
+    ): List<Challenge>
+
 
     /**
-     * Guarda retos en la caché global de Supabase y devuelve la lista con los IDs (UUID) generados por la base de datos.
+     * Obtiene los retos asignados a un usuario específico,
+     * incluyendo su estado de completado.
      */
-    suspend fun saveChallenges(challenges: List<Challenge>, city: String, weather: WeatherCondition?): List<Challenge>
+    suspend fun getUserChallenges(
+        userId: String
+    ): List<Challenge>
+
 
     /**
-     * Vincula retos específicos a un usuario y gestiona su estado de completado.
+     * Guarda retos en la caché global de Supabase
+     * y devuelve la lista con los IDs generados.
      */
-    suspend fun assignChallengesToUser(userId: String, challenges: List<Challenge>)
+    suspend fun saveChallenges(
+        challenges: List<Challenge>,
+        city: String,
+        weather: WeatherCondition?
+    ): List<Challenge>
 
-    suspend fun updateChallengeStatus(userId: String, challengeId: String, isCompleted: Boolean)
+
+    /**
+     * Vincula retos específicos a un usuario.
+     */
+    suspend fun assignChallengesToUser(
+        userId: String,
+        challenges: List<Challenge>
+    )
+
+
+    /**
+     * Actualiza el estado de completado de un reto.
+     */
+    suspend fun updateChallengeStatus(
+        userId: String,
+        challengeId: String,
+        isCompleted: Boolean
+    )
+
+
+    /**
+     * Devuelve las fechas reales en las que
+     * el usuario completó retos.
+     *
+     * Estas fechas se obtienen desde CompletedAt
+     * de TblChallengesUsers.
+     */
+    suspend fun getUserCompletionDates(
+        userId: String
+    ): List<String>
 }

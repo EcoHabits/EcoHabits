@@ -5,12 +5,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserChallengeDto(
+
     @SerialName("IdUserFK")
     val idUserFK: String,
+
     @SerialName("IdChallengeFK")
     val idChallengeFK: String,
+
     @SerialName("DateObtained")
-    val dateObtained: String, // Formato ISO8601 YYYY-MM-DD
+    val dateObtained: String,
+
     @SerialName("IsCompleted")
-    val isCompleted: Boolean
+    val isCompleted: Boolean,
+
+    @SerialName("CompletedAt")
+    val completedAt: String? = null
 )
