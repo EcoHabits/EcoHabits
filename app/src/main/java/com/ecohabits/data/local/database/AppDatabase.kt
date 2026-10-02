@@ -9,7 +9,7 @@ import com.ecohabits.data.local.dao.UserContextDao
 import com.ecohabits.data.local.entity.ChallengeEntity
 import com.ecohabits.data.local.entity.UserContextEntity
 
-@Database(entities = [ChallengeEntity::class, UserContextEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ChallengeEntity::class, UserContextEntity::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun challengeDao() : ChallengeDao
     abstract fun userContextDao(): UserContextDao
@@ -24,7 +24,10 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "App_Data_Base").build()
+                    "App_Data_Base"
+                )
+                .fallbackToDestructiveMigration(dropAllTables = true)
+                .build()
                 INSTANCE = instance
                 instance
             }

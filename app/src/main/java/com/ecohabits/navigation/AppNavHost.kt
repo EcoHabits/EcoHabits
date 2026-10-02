@@ -275,8 +275,6 @@ fun AppNavHost(
                 }
             )
         }
-
-
         /*
          * ------------------------------------------------
          * MAIN
@@ -287,7 +285,11 @@ fun AppNavHost(
             route = "home"
         ) {
 
-            HomeRoute()
+            HomeRoute(
+                onLogoutSuccess = {
+                    viewModel.selectRoute("welcome")
+                }
+            )
         }
 
 

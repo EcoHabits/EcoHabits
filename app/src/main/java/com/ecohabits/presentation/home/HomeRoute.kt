@@ -7,9 +7,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun HomeRoute(
+    onLogoutSuccess: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
-    HomeScreen(uiState = uiState)
+    HomeScreen(
+        uiState = uiState,
+        onLogoutClick = {
+            viewModel.logout(onLogoutSuccess)
+        }
+    )
 }

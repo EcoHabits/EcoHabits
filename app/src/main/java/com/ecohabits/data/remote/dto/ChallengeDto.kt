@@ -18,5 +18,9 @@ data class ChallengeDto(
     @SerialName("WeatherCondition")
     val weatherCondition: String,
     @SerialName("ChallengePoints")
-    val challengePoints: Int
+    val challengePoints: Int,
+    @SerialName("CO2Savings")
+    val co2Savings: Double? = 0.0,
+    @SerialName("WaterSavings")
+    val waterSavings: Double? = 0.0
 )

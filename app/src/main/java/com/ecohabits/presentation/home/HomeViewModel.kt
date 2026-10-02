@@ -3,6 +3,7 @@ package com.ecohabits.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ecohabits.domain.repository.AuthRepository
 import com.ecohabits.domain.usecase.GetCurrentContextUseCase
 import com.ecohabits.domain.usecase.GetDailyChallengesUseCase
 import com.ecohabits.domain.usecase.GetUserProgressUseCase
@@ -18,15 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-
     private val getDailyChallengesUseCase: GetDailyChallengesUseCase,
-
     private val getCurrentContextUseCase: GetCurrentContextUseCase,
-
     private val getUserProgressUseCase: GetUserProgressUseCase,
-
-    private val getUserStreakUseCase: GetUserStreakUseCase
-
+    private val getUserStreakUseCase: GetUserStreakUseCase,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
 
@@ -178,6 +175,19 @@ class HomeViewModel @Inject constructor(
                     streakDays =
                         streakDays
                 )
+            }
+        }
+    }
+
+    fun logout(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            val result = authRepository.logout()
+            _uiState.update { it.copy(isLoading = false) }
+            if (result.isSuccess) {
+                onSuccess()
+            } else {
+                Log.e("HomeViewModel", "Error al cerrar sesión: ${result.exceptionOrNull()?.message}")
             }
         }
     }
