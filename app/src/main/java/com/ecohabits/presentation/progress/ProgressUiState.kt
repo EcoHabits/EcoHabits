@@ -8,6 +8,7 @@ data class ProgressUiState(
     val level: Int = 1,
     val metrics: ImpactMetricsUiState = ImpactMetricsUiState(),
     val badges: List<BadgeUiState> = emptyList(),
+    val newlyUnlockedBadge: BadgeUiState? = null,
     val streak: Int = 0,
     val isLoading: Boolean = false,
     val error: String? = null
@@ -22,6 +23,7 @@ data class ImpactMetricsUiState(
 data class BadgeUiState(
     val id: String,
     val title: String,
+    val description: String,
     val icon: ImageVector,
     val backgroundColor: Color,
     val unlocked: Boolean

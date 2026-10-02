@@ -9,16 +9,17 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 fun ChallengesRoute(
     viewModel: ChallengesViewModel = hiltViewModel()
 ) {
+
     val uiState by viewModel.uiState.collectAsState()
 
     ChallengesScreen(
-        uiState = uiState,
-        onChallengeCheckedChange = { challenge, isChecked ->
-            viewModel.toggleChallenge(challenge, isChecked)
-        },
-        onRetry = {
-            viewModel.loadChallenges()
+        challenges = uiState.challenges,
+        onChallengeClick = { challenge ->
+
+            viewModel.toggleChallenge(
+                challenge = challenge,
+                isCompleted = !challenge.isCompleted
+            )
         }
     )
 }
-

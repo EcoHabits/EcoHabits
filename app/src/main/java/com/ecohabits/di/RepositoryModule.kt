@@ -1,11 +1,13 @@
 package com.ecohabits.di
 
 import com.ecohabits.data.repository.AuthRepositoryImpl
+import com.ecohabits.data.repository.BadgeRepositoryImpl
 import com.ecohabits.data.repository.ChallengeRepositoryImpl
 import com.ecohabits.data.repository.LocationRepositoryImpl
 import com.ecohabits.data.repository.UserContextRepositoryImpl
 import com.ecohabits.data.repository.WeatherRepositoryImpl
 import com.ecohabits.domain.repository.AuthRepository
+import com.ecohabits.domain.repository.BadgeRepository
 import com.ecohabits.domain.repository.ChallengeRepository
 import com.ecohabits.domain.repository.LocationRepository
 import com.ecohabits.domain.repository.UserContextRepository
@@ -22,21 +24,37 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindChallengeRepository(impl: ChallengeRepositoryImpl): ChallengeRepository
+    abstract fun bindChallengeRepository(
+        impl: ChallengeRepositoryImpl
+    ): ChallengeRepository
 
     @Binds
     @Singleton
-    abstract fun bindWeatherRepository(impl: WeatherRepositoryImpl): WeatherRepository
+    abstract fun bindWeatherRepository(
+        impl: WeatherRepositoryImpl
+    ): WeatherRepository
 
     @Binds
     @Singleton
-    abstract fun bindLocationRepository(impl: LocationRepositoryImpl): LocationRepository
+    abstract fun bindLocationRepository(
+        impl: LocationRepositoryImpl
+    ): LocationRepository
 
     @Binds
     @Singleton
-    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+    abstract fun bindAuthRepository(
+        impl: AuthRepositoryImpl
+    ): AuthRepository
 
     @Binds
     @Singleton
-    abstract fun bindUserContextRepository(impl: UserContextRepositoryImpl): UserContextRepository
+    abstract fun bindUserContextRepository(
+        impl: UserContextRepositoryImpl
+    ): UserContextRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBadgeRepository(
+        impl: BadgeRepositoryImpl
+    ): BadgeRepository
 }
