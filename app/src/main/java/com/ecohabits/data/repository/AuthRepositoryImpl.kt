@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.jsonPrimitive
 import javax.inject.Inject
+import com.ecohabits.domain.repository.AuthSessionState
 
 
 /**
@@ -28,34 +29,43 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
 
-    override val authState: Flow<Boolean> =
+    override val authState: Flow<AuthSessionState> =
         supabaseClient.auth.sessionStatus.map { status ->
 
-            if (status is SessionStatus.Authenticated) {
+            when (status) {
 
-                try {
+                is SessionStatus.Authenticated -> {
 
-                    ensureUserExistsInDatabase()
+                    try {
 
-                    Log.d(
-                        "AuthRepository",
-                        "Sesión restaurada y usuario sincronizado con TblUser."
-                    )
+                        ensureUserExistsInDatabase()
 
-                } catch (e: Exception) {
+                        Log.d(
+                            "AuthRepository",
+                            "Sesión restaurada y usuario sincronizado con TblUser."
+                        )
 
-                    Log.e(
-                        "AuthRepository",
-                        "No se pudo sincronizar el usuario con TblUser: ${e.message}",
-                        e
-                    )
+                    } catch (e: Exception) {
+
+                        Log.e(
+                            "AuthRepository",
+                            "No se pudo sincronizar el usuario con TblUser: ${e.message}",
+                            e
+                        )
+                    }
+
+                    AuthSessionState.Authenticated
                 }
 
-                true
+                is SessionStatus.NotAuthenticated -> {
 
-            } else {
+                    AuthSessionState.Unauthenticated
+                }
 
-                false
+                else -> {
+
+                    AuthSessionState.Loading
+                }
             }
         }
 
