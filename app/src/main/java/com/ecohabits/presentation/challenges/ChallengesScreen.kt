@@ -34,7 +34,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -57,6 +56,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.painterResource
+import com.ecohabits.R
 import com.ecohabits.domain.model.Challenge
 import com.ecohabits.domain.model.HabitCategory
 import kotlinx.coroutines.delay
@@ -242,24 +243,21 @@ private fun ChallengeHeader(
                         Alignment.Center
                 ) {
 
-                    Icon(
-                        imageVector =
-                            if (allCompleted) {
-                                Icons.Default.Check
-                            } else {
-                                Icons.Default.Eco
-                            },
-                        contentDescription =
-                            null,
-                        tint =
-                            Color(
-                                0xFF2E7D32
-                            ),
-                        modifier =
-                            Modifier.size(
-                                23.dp
-                            )
-                    )
+                    if (allCompleted) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = Color(0xFF2E7D32),
+                            modifier = Modifier.size(23.dp)
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_launcher_foreground),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(23.dp)
+                        )
+                    }
                 }
 
 

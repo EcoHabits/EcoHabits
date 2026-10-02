@@ -58,6 +58,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
+import com.ecohabits.R
 
 
 private const val POINTS_PER_LEVEL = 500
@@ -383,14 +385,12 @@ private fun ProgressHeader(
             ) {
 
                 Icon(
-                    imageVector =
-                        Icons.Default.Eco,
+                    painter =
+                        painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription =
                         null,
                     tint =
-                        Color(
-                            0xFF43A047
-                        ),
+                        Color.Unspecified,
                     modifier =
                         Modifier.size(
                             29.dp
