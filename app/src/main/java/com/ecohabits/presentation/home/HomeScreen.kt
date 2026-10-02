@@ -202,13 +202,13 @@ private fun WeatherCard(weather: WeatherUiState, cityName: String) {
             Spacer(modifier = Modifier.height(16.dp))
             Icon(
                 imageVector = getWeatherIcon(weather.condition),
-                contentDescription = weather.condition,
+                contentDescription = getConditionDisplay(weather.condition),
                 modifier = Modifier.size(72.dp),
-                tint = MaterialTheme.colorScheme.onPrimary
+                tint = getWeatherIconTint(weather.condition)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = weather.condition,
+                text = getConditionDisplay(weather.condition),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onPrimary
@@ -230,12 +230,35 @@ private fun WeatherCard(weather: WeatherUiState, cityName: String) {
     }
 }
 
+private fun getConditionDisplay(condition: String): String {
+    return when (condition.uppercase()) {
+        "SUNNY" -> "Soleado"
+        "RAINY" -> "Lluvioso"
+        "CLOUDY" -> "Nublado"
+        "COLD" -> "Frío"
+        "WINDY" -> "Ventoso"
+        "HOT" -> "Caluroso"
+        "UNKNOWN" -> "Desconocido"
+        else -> condition.replaceFirstChar { it.uppercase() }
+    }
+}
+
 private fun getWeatherIcon(condition: String): ImageVector {
     return when (condition.uppercase()) {
         "SUNNY", "HOT" -> Icons.Default.WbSunny
         "RAINY", "CLOUDY" -> Icons.Default.Cloud
         "COLD" -> Icons.Default.AcUnit
         else -> Icons.Default.Cloud
+    }
+}
+
+private fun getWeatherIconTint(condition: String): Color {
+    return when (condition.uppercase()) {
+        "SUNNY", "HOT" -> Color(0xFFFFB300)
+        "RAINY" -> Color(0xFF64B5F6)
+        "CLOUDY" -> Color(0xFFB0BEC5)
+        "COLD" -> Color(0xFF81D4FA)
+        else -> Color.White
     }
 }
 
